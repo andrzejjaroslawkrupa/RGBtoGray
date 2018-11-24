@@ -55,8 +55,8 @@ namespace RGBtoGray.ViewModel
             OpenFileDialog FileDialog = new OpenFileDialog();
             FileDialog.DefaultExt = ".jpg";
             FileDialog.Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|BMP Files (*.bmp)|*.bmp";
-            FileDialog.InitialDirectory = @"C:\";
             FileDialog.Title = "Please select an image file to convert.";
+            FileDialog.RestoreDirectory = true;
             Nullable<bool> result = FileDialog.ShowDialog();
 
             if (result == true)
