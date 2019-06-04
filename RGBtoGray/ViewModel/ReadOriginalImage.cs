@@ -1,9 +1,5 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
@@ -17,7 +13,7 @@ namespace RGBtoGray.ViewModel
 
         public string Filename
         {
-            get { return _filename; }
+            get => _filename;
             set
             {
                 _filename = value;
@@ -27,7 +23,7 @@ namespace RGBtoGray.ViewModel
 
         public string SelectedPath
         {
-            get { return _selectedPath; }
+            get => _selectedPath;
             set
             {
                 _selectedPath = value;
@@ -37,7 +33,7 @@ namespace RGBtoGray.ViewModel
 
         public BitmapImage OriginalImage
         {
-            get { return _originalImage; }
+            get => _originalImage;
             set
             {
                 _originalImage = value;
@@ -45,57 +41,53 @@ namespace RGBtoGray.ViewModel
             }
         }
         
-        public ICommand OpenFileDialogCommand
-        {
-            get { return new DelegateCommand(OpenFileDialog); }
-        }
+        public ICommand OpenFileDialogCommand => new DelegateCommand(OpenFileDialog);
 
         private void OpenFileDialog()
         {
-            OpenFileDialog FileDialog = new OpenFileDialog();
-            FileDialog.DefaultExt = ".jpg";
-            FileDialog.Filter = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|BMP Files (*.bmp)|*.bmp";
-            FileDialog.Title = "Please select an image file to convert.";
-            FileDialog.RestoreDirectory = true;
-            Nullable<bool> result = FileDialog.ShowDialog();
+            var fileDialog = new OpenFileDialog
+            {
+                DefaultExt = ".jpg",
+                Filter =
+                    "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|BMP Files (*.bmp)|*.bmp",
+                Title = "Please select an image file to convert.",
+                RestoreDirectory = true
+            };
+            var result = fileDialog.ShowDialog();
 
             if (result == true)
             {
-                SelectedPath = FileDialog.FileName;
+                SelectedPath = fileDialog.FileName;
                 ChangeFilenameFromPath(SelectedPath);
                 ChangeImageFromPath(SelectedPath);
             }
             else SelectedPath = null;
-            
         }
 
-        private void ChangeFilenameFromPath(string Path)
+        private void ChangeFilenameFromPath(string path)
         {
-            if (Path != null)
+            if (path == null) return;
+            try
             {
-                try
-                {
-                    string[] directorySplit = Path.Split('\\');
-                    Filename = directorySplit[directorySplit.Length - 1];
-                }
-                catch (Exception e)
-                {
-                    throw new ApplicationException("ChangeFilename: ", e);
-                }
+                var directorySplit = path.Split('\\');
+                Filename = directorySplit[directorySplit.Length - 1];
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException("ChangeFilename: ", e);
             }
         }
 
-        private void ChangeImageFromPath(string Path)
+        private void ChangeImageFromPath(string path)
         {
             try
             {
-                OriginalImage = new BitmapImage(new Uri(Path));
+                OriginalImage = new BitmapImage(new Uri(path));
             }
             catch(Exception e)
             {
                 throw new ApplicationException("ChangeImage: ", e);
             }
         }
-
     }
 }
