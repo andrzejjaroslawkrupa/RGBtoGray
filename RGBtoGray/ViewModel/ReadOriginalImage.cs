@@ -71,7 +71,7 @@ namespace RGBtoGray.ViewModel
 			try
 			{
 				var directorySplit = path.Split('\\');
-				_filename = directorySplit[directorySplit.Length - 1];
+				Filename = directorySplit[directorySplit.Length - 1];
 			}
 			catch (Exception e)
 			{
