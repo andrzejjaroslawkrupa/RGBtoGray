@@ -1,6 +1,6 @@
 ﻿namespace RGBtoGray.ViewModel
 {
-    class ReadConvertedImage
-    {
-    }
+	class ReadConvertedImage
+	{
+	}
 }

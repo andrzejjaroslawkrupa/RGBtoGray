@@ -3,26 +3,25 @@ using System.Windows.Input;
 
 namespace RGBtoGray.ViewModel
 {
-    public class DelegateCommand : ICommand
-    {
-        private readonly Action _action;
+	public class DelegateCommand : ICommand
+	{
+		private readonly Action _action;
 
-        public DelegateCommand(Action action)
-        {
-            _action = action;
-        }
+		public DelegateCommand(Action action)
+		{
+			_action = action;
+		}
 
-        public void Execute(object parameter)
-        {
-            _action();
-        }
+		public void Execute(object parameter)
+		{
+			_action();
+		}
 
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-        
-        public event EventHandler CanExecuteChanged { add { } remove { } }
-    }
+		public bool CanExecute(object parameter)
+		{
+			return true;
+		}
+
+		public event EventHandler CanExecuteChanged { add { } remove { } }
+	}
 }
-
