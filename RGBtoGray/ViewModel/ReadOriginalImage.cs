@@ -1,20 +1,21 @@
-﻿using Microsoft.Win32;
+﻿using RGBtoGray.FileDialog;
 using System;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace RGBtoGray.ViewModel
 {
-	class ReadOriginalImage : ObservableObject
+	public class ReadOriginalImage : ObservableObject
 	{
 		private string _filename;
 		private string _selectedPath;
 		private BitmapImage _originalImage;
+		private IOpenFileDialog _openFileDialog = new OpenFileDialog();
 
 		public string Filename
 		{
 			get => _filename;
-			set
+			private set
 			{
 				_filename = value;
 				RaisePropertyChangedEvent("Filename");
@@ -24,7 +25,7 @@ namespace RGBtoGray.ViewModel
 		public string SelectedPath
 		{
 			get => _selectedPath;
-			set
+			private set
 			{
 				_selectedPath = value;
 				RaisePropertyChangedEvent("SelectedPath");
@@ -34,32 +35,24 @@ namespace RGBtoGray.ViewModel
 		public BitmapImage OriginalImage
 		{
 			get => _originalImage;
-			set
+			private set
 			{
 				_originalImage = value;
 				RaisePropertyChangedEvent("OriginalImage");
 			}
 		}
 
+		public IOpenFileDialog FileDialog { get { return _openFileDialog; } set { _openFileDialog = value; } }
+
+
 		public ICommand OpenFileDialogCommand => new DelegateCommand(OpenFileDialog);
 
 		private void OpenFileDialog()
 		{
-			var fileDialog = new OpenFileDialog
+			if (FileDialog.ShowDialog() == true)
 			{
-				DefaultExt = ".jpg",
-				Filter =
-					"JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|BMP Files (*.bmp)|*.bmp",
-				Title = "Please select an image file to convert.",
-				RestoreDirectory = true
-			};
-			var result = fileDialog.ShowDialog();
-
-			if (result == true)
-			{
-				SelectedPath = fileDialog.FileName;
-				ChangeFilenameFromPath(SelectedPath);
-				ChangeImageFromPath(SelectedPath);
+				ChangeFilenameFromPath(FileDialog.FilePath);
+				ChangeImageFromPath(FileDialog.FilePath);
 			}
 			else
 				SelectedPath = null;
@@ -81,6 +74,7 @@ namespace RGBtoGray.ViewModel
 
 		private void ChangeImageFromPath(string path)
 		{
+			if (path == null) return;
 			try
 			{
 				OriginalImage = new BitmapImage(new Uri(path));
