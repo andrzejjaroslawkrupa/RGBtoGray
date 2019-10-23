@@ -10,7 +10,6 @@ namespace RGBtoGray.ViewModel
 		private string _filename;
 		private string _selectedPath;
 		private BitmapImage _originalImage;
-		private IOpenFileDialog _openFileDialog = new OpenFileDialog();
 
 		public string Filename
 		{
@@ -42,7 +41,7 @@ namespace RGBtoGray.ViewModel
 			}
 		}
 
-		public IOpenFileDialog FileDialog { get { return _openFileDialog; } set { _openFileDialog = value; } }
+		public IOpenFileDialog FileDialog { get; set; } = new OpenFileDialog();
 
 
 		public ICommand OpenFileDialogCommand => new DelegateCommand(OpenFileDialog);
@@ -51,20 +50,21 @@ namespace RGBtoGray.ViewModel
 		{
 			if (FileDialog.ShowDialog() == true)
 			{
-				ChangeFilenameFromPath(FileDialog.FilePath);
-				ChangeImageFromPath(FileDialog.FilePath);
+				if (ChangeImageFromPath(FileDialog.FilePath) == true)
+					ChangeFilenameFromPath(FileDialog.FilePath);
 			}
 			else
 				SelectedPath = null;
 		}
 
-		private void ChangeFilenameFromPath(string path)
+		private bool? ChangeFilenameFromPath(string path)
 		{
-			if (path == null) return;
+			if (path == null) return false;
 			try
 			{
 				var directorySplit = path.Split('\\');
 				Filename = directorySplit[directorySplit.Length - 1];
+				return true;
 			}
 			catch (Exception e)
 			{
@@ -72,12 +72,13 @@ namespace RGBtoGray.ViewModel
 			}
 		}
 
-		private void ChangeImageFromPath(string path)
+		private bool? ChangeImageFromPath(string path)
 		{
-			if (path == null) return;
+			if (path == null) return false;
 			try
 			{
 				OriginalImage = new BitmapImage(new Uri(path));
+				return true;
 			}
 			catch (Exception e)
 			{
