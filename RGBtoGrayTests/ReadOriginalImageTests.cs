@@ -13,7 +13,7 @@ namespace RGBtoGrayTests
 	{
 		private ReadOriginalImage _ReadOriginalImage;
 		private Mock<IOpenFileDialog> _FileDialogMock;
-		private string _CurrentDirectory = TestContext.CurrentContext.TestDirectory;
+		private string _TestFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 
 		[SetUp]
 		public void Setup()
@@ -26,7 +26,7 @@ namespace RGBtoGrayTests
 		[Test]
 		public void NewImageLoaded_FilenameChangedCorrectly()
 		{
-			_FileDialogMock.Setup(m => m.FilePath).Returns(_CurrentDirectory + @"\\TestFiles\\testImage.jpg");
+			_FileDialogMock.Setup(m => m.FilePath).Returns(_TestFilesDirectory);
 			_ReadOriginalImage.FileDialog = _FileDialogMock.Object;
 
 			_ReadOriginalImage.OpenFileDialogCommand.Execute(null);
@@ -37,7 +37,7 @@ namespace RGBtoGrayTests
 		[Test]
 		public void NewImageLoaded_ImageSetCorrectly()
 		{
-			var testImagePath = _CurrentDirectory + @"\\TestFiles\\testImage.jpg";
+			var testImagePath = _TestFilesDirectory;
 			_FileDialogMock.Setup(m => m.FilePath).Returns(testImagePath);
 			_ReadOriginalImage.FileDialog = _FileDialogMock.Object;
 			var _ImageProcessing = new ImageProcessing();

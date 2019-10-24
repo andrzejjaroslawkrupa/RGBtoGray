@@ -8,7 +8,7 @@ namespace ImgProcLibTests
 	[TestFixture]
 	public class ImageProcessingTests
 	{
-		private string _CurrentDirectory = TestContext.CurrentContext.TestDirectory;
+		private string _TestFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 		private ImageProcessing _ImageProcessing;
 
 		[SetUp]
@@ -20,7 +20,7 @@ namespace ImgProcLibTests
 		[Test]
 		public void ConvertToGrayscale_BlackImage_ImageUnchanged()
 		{
-			var originalImage = new BitmapImage(new Uri(_CurrentDirectory + @"\\TestFiles\\testImage.jpg"));
+			var originalImage = new BitmapImage(new Uri(_TestFilesDirectory));
 
 			var convertedImage = _ImageProcessing.ConvertToGrayscale(originalImage);
 
@@ -30,7 +30,7 @@ namespace ImgProcLibTests
 		[Test]
 		public void GetBitmapPixels_BlackImage_ValidByteArray()
 		{
-			var originalImage = new BitmapImage(new Uri(_CurrentDirectory + @"\\TestFiles\\testImage.jpg"));
+			var originalImage = new BitmapImage(new Uri(_TestFilesDirectory));
 			var expected = new byte[] { 0, 0, 0, 255 };
 
 			var pixels = _ImageProcessing.GetBitmapPixels(originalImage);
