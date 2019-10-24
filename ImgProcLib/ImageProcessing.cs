@@ -12,6 +12,9 @@ namespace ImgProcLib
 
 		public byte[] GetBitmapPixels(BitmapImage bitmapImage)
 		{
+			if (bitmapImage == null)
+				throw new ArgumentNullException();
+
 			int stride = bitmapImage.PixelWidth * (bitmapImage.Format.BitsPerPixel / 8);
 			byte[] pixels = new byte[bitmapImage.PixelHeight * stride];
 

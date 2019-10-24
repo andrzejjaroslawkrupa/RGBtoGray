@@ -37,5 +37,13 @@ namespace ImgProcLibTests
 
 			CollectionAssert.AreEqual(expected, pixels);
 		}
+
+		[Test]
+		public void GetBitmapPixels_Null_ExceptionIsThrown()
+		{
+			BitmapImage originalImage = null;
+
+			Assert.That(() => _ImageProcessing.GetBitmapPixels(originalImage), Throws.ArgumentNullException);
+		}
 	}
 }
