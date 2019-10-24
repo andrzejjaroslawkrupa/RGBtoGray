@@ -3,8 +3,8 @@ using RGBtoGray.ViewModel;
 using Moq;
 using RGBtoGray.FileDialog;
 using System;
-using System.IO;
 using System.Windows.Media.Imaging;
+using ImgProcLib;
 
 namespace RGBtoGrayTests
 {
@@ -40,10 +40,11 @@ namespace RGBtoGrayTests
 			var testImagePath = _CurrentDirectory + @"\\TestFiles\\testImage.jpg";
 			_FileDialogMock.Setup(m => m.FilePath).Returns(testImagePath);
 			_ReadOriginalImage.FileDialog = _FileDialogMock.Object;
-			var expected = GetBitmapPixels(new BitmapImage(new Uri(testImagePath)));
+			var _ImageProcessing = new ImageProcessing();
+			var expected = _ImageProcessing.GetBitmapPixels(new BitmapImage(new Uri(testImagePath)));
 
 			_ReadOriginalImage.OpenFileDialogCommand.Execute(null);
-			var actual = GetBitmapPixels(_ReadOriginalImage.OriginalImage);
+			var actual = _ImageProcessing.GetBitmapPixels(_ReadOriginalImage.OriginalImage);
 
 			CollectionAssert.AreEqual(expected, actual);
 		}
@@ -55,16 +56,6 @@ namespace RGBtoGrayTests
 			_ReadOriginalImage.FileDialog = _FileDialogMock.Object;
 
 			Assert.That(() => _ReadOriginalImage.OpenFileDialogCommand.Execute(null), Throws.Exception.TypeOf<ApplicationException>());
-		}
-
-		private byte[] GetBitmapPixels(BitmapImage bitmapImage)
-		{
-			int stride = bitmapImage.PixelWidth * (bitmapImage.Format.BitsPerPixel / 8);
-			byte[] pixels = new byte[bitmapImage.PixelHeight * stride];
-
-			bitmapImage.CopyPixels(pixels, stride, 0);
-
-			return pixels;
 		}
 	}
 }
