@@ -35,7 +35,7 @@ namespace ImgProcLib
 
 		private byte[] ConvertPixelsToGrayscale(byte[] pixels)
 		{
-			for (int y = 0; y < pixels.Length; y = y + 4)
+			for (int y = 0; y < pixels.Length; y += 4)
 			{
 				pixels[y] = (byte)(R * pixels[y] + G * pixels[y + 1] + B * pixels[y + 2]);
 				pixels[y + 1] = pixels[y];
