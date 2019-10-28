@@ -16,9 +16,11 @@
 			<RowDefinition Height="30" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="40" />
+			<RowDefinition Height="40" />
 		</Grid.RowDefinitions>
 		<TextBlock Grid.Row="2" Text="After conversion:" Margin="10,0,0,0"/>
 		<Image Grid.Row="3" Source="{Binding ConvertedImage, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
 		<Button Content="Convert"  Grid.Row="4" VerticalAlignment="Center" Width="75" Command="{Binding ConvertCommand}"/>
+		<TextBlock Grid.Row="5" Text="{Binding ConvertionTime, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,0,0"/>
 	</Grid>
 </UserControl>

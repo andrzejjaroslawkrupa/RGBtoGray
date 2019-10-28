@@ -16,6 +16,7 @@
 			<RowDefinition Height="30" />
 			<RowDefinition Height="*" />
 			<RowDefinition Height="40" />
+			<RowDefinition Height="40" />
 		</Grid.RowDefinitions>
 		<TextBlock Grid.Row="0" Text="{Binding Filename, UpdateSourceTrigger=PropertyChanged,
 			StringFormat='File name: {0}'}" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
