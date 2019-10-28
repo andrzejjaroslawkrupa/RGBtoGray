@@ -8,7 +8,6 @@ namespace RGBtoGray.ViewModel
 	public class ReadOriginalImage : ObservableObject
 	{
 		private string _filename;
-		private string _selectedPath;
 		private BitmapImage _originalImage;
 
 		public string Filename
@@ -18,16 +17,6 @@ namespace RGBtoGray.ViewModel
 			{
 				_filename = value;
 				RaisePropertyChangedEvent("Filename");
-			}
-		}
-
-		public string SelectedPath
-		{
-			get => _selectedPath;
-			private set
-			{
-				_selectedPath = value;
-				RaisePropertyChangedEvent("SelectedPath");
 			}
 		}
 
@@ -48,13 +37,13 @@ namespace RGBtoGray.ViewModel
 
 		private void OpenFileDialog()
 		{
-			if (FileDialog.ShowDialog() == true)
+			if (FileDialog.ShowDialog() == true && ChangeImageFromPath(FileDialog.FilePath) == true)
 			{
-				if (ChangeImageFromPath(FileDialog.FilePath) == true)
-					ChangeFilenameFromPath(FileDialog.FilePath);
+				ChangeFilenameFromPath(FileDialog.FilePath);
+				Presenter.FilePath = FileDialog.FilePath;
 			}
 			else
-				SelectedPath = null;
+				Presenter.FilePath = null;
 		}
 
 		private bool? ChangeFilenameFromPath(string path)
