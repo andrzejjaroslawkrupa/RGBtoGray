@@ -41,7 +41,7 @@ namespace RGBtoGray.ViewModel
 			ConvertedImage = imageProcessing.ConvertBitmapImageToGrayscale(new BitmapImage(uri));
 			watch.Stop();
 			var elapsedMs = watch.ElapsedMilliseconds;
-			ConvertionTime = "Elapsed time: " + Convert.ToString(elapsedMs) + "ms";
+			ConvertionTime = Convert.ToString(elapsedMs) + "ms";
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace ImgProcLib
 
 			pixels = ConvertPixelsToGrayscale(pixels);
 
-			return CreateImageFile(bitmapImage, pixels);
+			return CreateImage(bitmapImage, pixels);
 		}
 
 		public byte[] GetBitmapPixels(BitmapImage bitmapImage)
@@ -45,7 +45,7 @@ namespace ImgProcLib
 			return pixels;
 		}
 
-		private BitmapImage CreateImageFile(BitmapImage bitmapImage, byte[] pixels)
+		private BitmapImage CreateImage(BitmapImage bitmapImage, byte[] pixels)
 		{
 			var stride = DetermineStride(bitmapImage);
 
