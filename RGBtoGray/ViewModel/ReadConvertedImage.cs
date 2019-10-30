@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using ImgProcLib;
 
 namespace RGBtoGray.ViewModel
 {
@@ -34,11 +33,11 @@ namespace RGBtoGray.ViewModel
 
 		private void ConvertImage()
 		{
-			var imageProcessing = new ImageProcessing();
+			var imageProcessing = new ImageProcessingAdapter();
 			var uri = new Uri(Presenter.FilePath);
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			ConvertedImage = imageProcessing.ConvertBitmapImageToGrayscale(new BitmapImage(uri));
+			ConvertedImage = imageProcessing.ConvertImage(uri);
 			watch.Stop();
 			var elapsedMs = watch.ElapsedMilliseconds;
 			ConvertionTime = Convert.ToString(elapsedMs) + "ms";
