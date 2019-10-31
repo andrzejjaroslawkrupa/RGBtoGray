@@ -29,15 +29,16 @@ namespace RGBtoGray.ViewModel
 			}
 		}
 
+		public IImageProcessingAdapter ImageProcessingAdapter { get; set; } = new ImageProcessingAdapter();
+
 		public ICommand ConvertCommand => new DelegateCommand(ConvertImage);
 
 		private void ConvertImage()
 		{
-			var imageProcessing = new ImageProcessingAdapter();
 			var uri = new Uri(Presenter.FilePath);
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			ConvertedImage = imageProcessing.ConvertImage(uri);
+			ConvertedImage = ImageProcessingAdapter.ConvertImage(uri);
 			watch.Stop();
 			var elapsedMs = watch.ElapsedMilliseconds;
 			ConvertionTime = Convert.ToString(elapsedMs) + "ms";
