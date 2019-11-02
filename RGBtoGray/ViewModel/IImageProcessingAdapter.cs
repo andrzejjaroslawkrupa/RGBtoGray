@@ -5,6 +5,6 @@ namespace RGBtoGray.ViewModel
 {
 	public interface IImageProcessingAdapter
 	{
-		BitmapImage ConvertImage(Uri imageUri);
+		BitmapImage ConvertImage(string path);
 	}
 }
