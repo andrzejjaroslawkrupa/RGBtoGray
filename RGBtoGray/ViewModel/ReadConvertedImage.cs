@@ -19,13 +19,13 @@ namespace RGBtoGray.ViewModel
 			}
 		}
 
-		public string ConvertionTime
+		public string ConversionTime
 		{
 			get => _conversionTime;
 			private set
 			{
 				_conversionTime = value;
-				RaisePropertyChangedEvent("ConvertionTime");
+				RaisePropertyChangedEvent("ConversionTime");
 			}
 		}
 
@@ -41,7 +41,7 @@ namespace RGBtoGray.ViewModel
 			ConvertedImage = ImageProcessingAdapter.ConvertImage(uri);
 			watch.Stop();
 			var elapsedMs = watch.ElapsedMilliseconds;
-			ConvertionTime = Convert.ToString(elapsedMs) + "ms";
+			ConversionTime = Convert.ToString(elapsedMs) + "ms";
 		}
 	}
 }
