@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace RGBtoGrey
+﻿namespace RGBtoGrey.View
 {
-	public partial class MainWindow : Window
+	public partial class MainWindow
 	{
 		public MainWindow()
 		{
