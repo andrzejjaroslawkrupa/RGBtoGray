@@ -11,51 +11,51 @@ namespace RGBtoGrayTests
 	[TestFixture]
 	public class ReadOriginalImageTests
 	{
-		private ReadOriginalImage _ReadOriginalImage;
-		private Mock<IOpenFileDialog> _FileDialogMock;
-		private string _TestFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
+		private ReadOriginalImage _readOriginalImage;
+		private Mock<IOpenFileDialog> _fileDialogMock;
+		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 
 		[SetUp]
 		public void Setup()
 		{
-			_ReadOriginalImage = new ReadOriginalImage();
-			_FileDialogMock = new Mock<IOpenFileDialog>();
-			_FileDialogMock.Setup(m => m.ShowDialog()).Returns(true);
+			_readOriginalImage = new ReadOriginalImage();
+			_fileDialogMock = new Mock<IOpenFileDialog>();
+			_fileDialogMock.Setup(m => m.ShowDialog()).Returns(true);
 		}
 
 		[Test]
 		public void NewImageLoaded_FilenameChangedCorrectly()
 		{
-			_FileDialogMock.Setup(m => m.FilePath).Returns(_TestFilesDirectory);
-			_ReadOriginalImage.FileDialog = _FileDialogMock.Object;
+			_fileDialogMock.Setup(m => m.FilePath).Returns(_testFilesDirectory);
+			_readOriginalImage.FileDialog = _fileDialogMock.Object;
 
-			_ReadOriginalImage.OpenFileDialogCommand.Execute(null);
+			_readOriginalImage.OpenFileDialogCommand.Execute(null);
 
-			Assert.That(_ReadOriginalImage.Filename, Is.EqualTo("testImage.jpg"));
+			Assert.That(_readOriginalImage.Filename, Is.EqualTo("testImage.jpg"));
 		}
 
 		[Test]
 		public void NewImageLoaded_ImageSetCorrectly()
 		{
-			var testImagePath = _TestFilesDirectory;
-			_FileDialogMock.Setup(m => m.FilePath).Returns(testImagePath);
-			_ReadOriginalImage.FileDialog = _FileDialogMock.Object;
-			var _ImageProcessing = new ImageProcessing();
-			var expected = _ImageProcessing.GetBitmapPixels(new BitmapImage(new Uri(testImagePath)));
+			var testImagePath = _testFilesDirectory;
+			_fileDialogMock.Setup(m => m.FilePath).Returns(testImagePath);
+			_readOriginalImage.FileDialog = _fileDialogMock.Object;
+			var imageProcessing = new ImageProcessing();
+			var expected = imageProcessing.GetBitmapPixels(new BitmapImage(new Uri(testImagePath)));
 
-			_ReadOriginalImage.OpenFileDialogCommand.Execute(null);
-			var actual = _ImageProcessing.GetBitmapPixels(_ReadOriginalImage.OriginalImage);
+			_readOriginalImage.OpenFileDialogCommand.Execute(null);
+			var actual = imageProcessing.GetBitmapPixels(_readOriginalImage.OriginalImage);
 
-			CollectionAssert.AreEqual(expected, actual);
+			Assert.That(actual, Is.EqualTo(expected));
 		}
 
 		[Test]
 		public void PathChosenWithoutExistingFile_ExceptionThrown()
 		{
-			_FileDialogMock.Setup(m => m.FilePath).Returns("C:\\testPath\\testFile.jpg");
-			_ReadOriginalImage.FileDialog = _FileDialogMock.Object;
+			_fileDialogMock.Setup(m => m.FilePath).Returns(@"C:\\testPath\\testFile.jpg");
+			_readOriginalImage.FileDialog = _fileDialogMock.Object;
 
-			Assert.That(() => _ReadOriginalImage.OpenFileDialogCommand.Execute(null), Throws.Exception.TypeOf<ApplicationException>());
+			Assert.That(() => _readOriginalImage.OpenFileDialogCommand.Execute(null), Throws.Exception.TypeOf<ApplicationException>());
 		}
 	}
 }
