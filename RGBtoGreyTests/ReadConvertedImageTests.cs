@@ -18,12 +18,12 @@ namespace RGBtoGreyTests
 		public void Setup()
 		{
 			_imageProcessingMock = new Mock<IImageProcessingAdapter>();
+			Presenter.FilePath = _testFilesDirectory;
 		}
 
 		[Test]
 		public void ConvertImage_ConvertCommandExecuted_ConvertImageUsedOnce()
 		{
-			Presenter.FilePath = _testFilesDirectory;
 			var readConvertedImage = new ReadConvertedImage
 			{
 				ImageProcessingAdapter = _imageProcessingMock.Object
@@ -37,10 +37,9 @@ namespace RGBtoGreyTests
 		[Test]
 		public void ConvertImage_ConvertCommandExecuted_ConvertedImageSet()
 		{
-			_bitmapImage = new BitmapImage((new Uri(_testFilesDirectory)));
+			_bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
 			_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>()))
 				.Returns(_bitmapImage);
-			Presenter.FilePath = _testFilesDirectory;
 			var readConvertedImage = new ReadConvertedImage
 			{
 				ImageProcessingAdapter = _imageProcessingMock.Object
@@ -51,6 +50,20 @@ namespace RGBtoGreyTests
 			var actual = ImageProcessing.GetBitmapPixels(readConvertedImage.ConvertedImage);
 
 			Assert.That(actual, Is.EqualTo(expected));
+		}
+
+		[Test]
+		public void ConvertImage_ConvertCommandExecuted_ConversionTimeSet()
+		{
+			_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>()));
+			var readConvertedImage = new ReadConvertedImage
+			{
+				ImageProcessingAdapter = _imageProcessingMock.Object
+			};
+
+			readConvertedImage.ConvertCommand.Execute(null);
+
+			Assert.That(readConvertedImage.ConversionTime, Is.Not.EqualTo(null));
 		}
 	}
 }
