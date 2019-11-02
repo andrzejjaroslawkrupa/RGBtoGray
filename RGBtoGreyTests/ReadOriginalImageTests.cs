@@ -40,11 +40,10 @@ namespace RGBtoGreyTests
 			var testImagePath = _testFilesDirectory;
 			_fileDialogMock.Setup(m => m.FilePath).Returns(testImagePath);
 			_readOriginalImage.FileDialog = _fileDialogMock.Object;
-			var imageProcessing = new ImageProcessing();
-			var expected = imageProcessing.GetBitmapPixels(new BitmapImage(new Uri(testImagePath)));
+			var expected = ImageProcessing.GetBitmapPixels(new BitmapImage(new Uri(testImagePath)));
 
 			_readOriginalImage.OpenFileDialogCommand.Execute(null);
-			var actual = imageProcessing.GetBitmapPixels(_readOriginalImage.OriginalImage);
+			var actual = ImageProcessing.GetBitmapPixels(_readOriginalImage.OriginalImage);
 
 			Assert.That(actual, Is.EqualTo(expected));
 		}

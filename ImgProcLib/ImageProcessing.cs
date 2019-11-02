@@ -19,7 +19,7 @@ namespace ImgProcLib
 			return CreateImage(bitmapImage, pixels);
 		}
 
-		public byte[] GetBitmapPixels(BitmapImage bitmapImage)
+		public static byte[] GetBitmapPixels(BitmapImage bitmapImage)
 		{
 			if (bitmapImage == null)
 				throw new ArgumentNullException();
@@ -44,7 +44,7 @@ namespace ImgProcLib
 			return pixels;
 		}
 
-		private BitmapImage CreateImage(BitmapImage bitmapImage, byte[] pixels)
+		private static BitmapImage CreateImage(BitmapSource bitmapImage, byte[] pixels)
 		{
 			var stride = DetermineStride(bitmapImage);
 
@@ -65,7 +65,7 @@ namespace ImgProcLib
 			return convertedBitmapImage;
 		}
 
-		private int DetermineStride(BitmapImage bitmapImage)
+		private static int DetermineStride(BitmapSource bitmapImage)
 		{
 			return bitmapImage.PixelWidth * (bitmapImage.Format.BitsPerPixel / 8);
 		}

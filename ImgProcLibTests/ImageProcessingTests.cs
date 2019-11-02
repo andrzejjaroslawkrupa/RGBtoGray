@@ -26,7 +26,7 @@ namespace ImgProcLibTests
 
 			var convertedImage = _imageProcessing.ConvertBitmapImageToGreyscale(originalImage);
 
-			CollectionAssert.AreEqual(_imageProcessing.GetBitmapPixels(convertedImage), _imageProcessing.GetBitmapPixels(originalImage));
+			CollectionAssert.AreEqual(ImageProcessing.GetBitmapPixels(convertedImage), ImageProcessing.GetBitmapPixels(originalImage));
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace ImgProcLibTests
 
 			var convertedImage = _imageProcessing.ConvertBitmapImageToGreyscale(originalImage);
 
-			CollectionAssert.AreEqual(expected, _imageProcessing.GetBitmapPixels(convertedImage));
+			CollectionAssert.AreEqual(expected, ImageProcessing.GetBitmapPixels(convertedImage));
 		}
 
 		[Test]
@@ -46,7 +46,7 @@ namespace ImgProcLibTests
 			var originalImage = new BitmapImage(new Uri(_testFilesDirectory + _blackTestImage));
 			var expected = new byte[] { 0, 0, 0, 255 };
 
-			var pixels = _imageProcessing.GetBitmapPixels(originalImage);
+			var pixels = ImageProcessing.GetBitmapPixels(originalImage);
 
 			CollectionAssert.AreEqual(expected, pixels);
 		}
@@ -57,7 +57,7 @@ namespace ImgProcLibTests
 			var originalImage = new BitmapImage(new Uri(_testFilesDirectory + _redTestImage));
 			var expected = new byte[] { 36, 27, 237, 255 };
 
-			var pixels = _imageProcessing.GetBitmapPixels(originalImage);
+			var pixels = ImageProcessing.GetBitmapPixels(originalImage);
 
 			CollectionAssert.AreEqual(expected, pixels);
 		}
@@ -65,7 +65,7 @@ namespace ImgProcLibTests
 		[Test]
 		public void GetBitmapPixels_Null_ExceptionIsThrown()
 		{
-			Assert.That(() => _imageProcessing.GetBitmapPixels(null), Throws.ArgumentNullException);
+			Assert.That(() => ImageProcessing.GetBitmapPixels(null), Throws.ArgumentNullException);
 		}
 	}
 }

@@ -3,6 +3,7 @@ using RGBtoGrey.ViewModel;
 using Moq;
 using System;
 using System.Windows.Media.Imaging;
+using ImgProcLib;
 
 namespace RGBtoGreyTests
 {
@@ -44,11 +45,10 @@ namespace RGBtoGreyTests
 			{
 				ImageProcessingAdapter = _imageProcessingMock.Object
 			};
-			var imageProcessing = new ImgProcLib.ImageProcessing();
-			var expected = imageProcessing.GetBitmapPixels(_bitmapImage);
+			var expected = ImageProcessing.GetBitmapPixels(_bitmapImage);
 
 			readConvertedImage.ConvertCommand.Execute(null);
-			var actual = imageProcessing.GetBitmapPixels(readConvertedImage.ConvertedImage);
+			var actual = ImageProcessing.GetBitmapPixels(readConvertedImage.ConvertedImage);
 
 			Assert.That(actual, Is.EqualTo(expected));
 		}
