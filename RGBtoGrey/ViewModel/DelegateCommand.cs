@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace RGBtoGray.ViewModel
+namespace RGBtoGrey.ViewModel
 {
 	public class DelegateCommand : ICommand
 	{

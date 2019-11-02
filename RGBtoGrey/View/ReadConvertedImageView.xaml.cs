@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace RGBtoGray.View
+namespace RGBtoGrey.View
 {
 	/// <summary>
 	/// Interaction logic for ReadConvertedImageView.xaml

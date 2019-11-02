@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace RGBtoGray
+namespace RGBtoGrey
 {
     /// <summary>
     /// Interaction logic for App.xaml

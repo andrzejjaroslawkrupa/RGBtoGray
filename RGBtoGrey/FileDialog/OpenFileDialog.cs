@@ -1,11 +1,6 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Windows.Input;
-using System.Windows.Media.Imaging;
-
-namespace RGBtoGray.FileDialog
+﻿namespace RGBtoGrey.FileDialog
 {
-	class OpenFileDialog : IOpenFileDialog
+	internal class OpenFileDialog : IOpenFileDialog
 	{
 		public string FilePath { get; private set; }
 
@@ -21,12 +16,7 @@ namespace RGBtoGray.FileDialog
 			};
 			var didFileDialogOpen = fileDialog.ShowDialog();
 
-			if (didFileDialogOpen == true)
-			{
-				FilePath = fileDialog.FileName;
-			}
-			else
-				FilePath = "";
+			FilePath = didFileDialogOpen == true ? fileDialog.FileName : "";
 
 			return didFileDialogOpen;
 		}

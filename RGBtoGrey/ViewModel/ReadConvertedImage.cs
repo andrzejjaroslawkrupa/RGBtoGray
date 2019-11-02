@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-namespace RGBtoGray.ViewModel
+namespace RGBtoGrey.ViewModel
 {
 	public class ReadConvertedImage : ObservableObject
 	{

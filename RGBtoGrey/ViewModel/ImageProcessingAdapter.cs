@@ -2,7 +2,7 @@
 using System.Windows.Media.Imaging;
 using ImgProcLib;
 
-namespace RGBtoGray.ViewModel
+namespace RGBtoGrey.ViewModel
 {
 	public class ImageProcessingAdapter : IImageProcessingAdapter
 	{
@@ -12,7 +12,7 @@ namespace RGBtoGray.ViewModel
 			var uri = new Uri(path);
 			var originalImage = new BitmapImage(uri);
 
-			return imageProcessing.ConvertBitmapImageToGrayscale(originalImage);
+			return imageProcessing.ConvertBitmapImageToGreyscale(originalImage);
 		}
 	}
 }

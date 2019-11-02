@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace ImgProcLib
@@ -11,11 +10,11 @@ namespace ImgProcLib
 		private const double G = 0.7152;
 		private const double B = 0.0722;
 
-		public BitmapImage ConvertBitmapImageToGrayscale(BitmapImage bitmapImage)
+		public BitmapImage ConvertBitmapImageToGreyscale(BitmapImage bitmapImage)
 		{
 			var pixels = GetBitmapPixels(bitmapImage);
 
-			pixels = ConvertPixelsToGrayscale(pixels);
+			pixels = ConvertPixelsToGreyscale(pixels);
 
 			return CreateImage(bitmapImage, pixels);
 		}
@@ -25,21 +24,21 @@ namespace ImgProcLib
 			if (bitmapImage == null)
 				throw new ArgumentNullException();
 
-			int stride = DetermineStride(bitmapImage);
-			byte[] pixels = new byte[bitmapImage.PixelHeight * stride];
+			var stride = DetermineStride(bitmapImage);
+			var pixels = new byte[bitmapImage.PixelHeight * stride];
 
 			bitmapImage.CopyPixels(pixels, stride, 0);
 
 			return pixels;
 		}
 
-		private byte[] ConvertPixelsToGrayscale(byte[] pixels)
+		private static byte[] ConvertPixelsToGreyscale(byte[] pixels)
 		{
-			for (int y = 0; y < pixels.Length; y += 4)
+			for (var i = 0; i < pixels.Length; i += 4)
 			{
-				pixels[y] = (byte)(R * pixels[y] + G * pixels[y + 1] + B * pixels[y + 2]);
-				pixels[y + 1] = pixels[y];
-				pixels[y + 2] = pixels[y];
+				pixels[i] = (byte)(R * pixels[i] + G * pixels[i + 1] + B * pixels[i + 2]);
+				pixels[i + 1] = pixels[i];
+				pixels[i + 2] = pixels[i];
 			}
 
 			return pixels;

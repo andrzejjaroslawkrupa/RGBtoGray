@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace RGBtoGray
+namespace RGBtoGrey
 {
 	public partial class MainWindow : Window
 	{

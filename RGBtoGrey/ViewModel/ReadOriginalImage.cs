@@ -1,9 +1,9 @@
-﻿using RGBtoGray.FileDialog;
-using System;
+﻿using System;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using RGBtoGrey.FileDialog;
 
-namespace RGBtoGray.ViewModel
+namespace RGBtoGrey.ViewModel
 {
 	public class ReadOriginalImage : ObservableObject
 	{
@@ -46,14 +46,13 @@ namespace RGBtoGray.ViewModel
 				Presenter.FilePath = null;
 		}
 
-		private bool? ChangeFilenameFromPath(string path)
+		private void ChangeFilenameFromPath(string path)
 		{
-			if (path == null) return false;
+			if (path == null) return;
 			try
 			{
 				var directorySplit = path.Split('\\');
 				Filename = directorySplit[directorySplit.Length - 1];
-				return true;
 			}
 			catch (Exception e)
 			{

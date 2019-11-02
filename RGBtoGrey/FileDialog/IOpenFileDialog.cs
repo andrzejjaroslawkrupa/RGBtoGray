@@ -1,4 +1,4 @@
-﻿namespace RGBtoGray.FileDialog
+﻿namespace RGBtoGrey.FileDialog
 {
 	public interface IOpenFileDialog
 	{

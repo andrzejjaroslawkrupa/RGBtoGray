@@ -1,4 +1,4 @@
-﻿namespace RGBtoGray.ViewModel
+﻿namespace RGBtoGrey.ViewModel
 {
 	public class Presenter
 	{

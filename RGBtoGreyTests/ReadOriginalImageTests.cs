@@ -1,12 +1,12 @@
 ﻿using NUnit.Framework;
-using RGBtoGray.ViewModel;
+using RGBtoGrey.ViewModel;
 using Moq;
-using RGBtoGray.FileDialog;
+using RGBtoGrey.FileDialog;
 using System;
 using System.Windows.Media.Imaging;
 using ImgProcLib;
 
-namespace RGBtoGrayTests
+namespace RGBtoGreyTests
 {
 	[TestFixture]
 	public class ReadOriginalImageTests

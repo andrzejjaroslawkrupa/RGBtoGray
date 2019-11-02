@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace RGBtoGray.ViewModel
+namespace RGBtoGrey.ViewModel
 {
 	public abstract class ObservableObject : INotifyPropertyChanged
 	{
