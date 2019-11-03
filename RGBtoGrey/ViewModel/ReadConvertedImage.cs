@@ -1,6 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using RGBtoGrey.FileDialog;
 
 namespace RGBtoGrey.ViewModel
 {
@@ -42,7 +44,10 @@ namespace RGBtoGrey.ViewModel
 
 		public IImageProcessingAdapter ImageProcessingAdapter { get; set; } = new ImageProcessingAdapter();
 
+		public IFileDialog FileDialog { get; set; } = new FileDialog.FileDialog(new Microsoft.Win32.SaveFileDialog());
+
 		public ICommand ConvertCommand => new DelegateCommand(ConvertImage);
+		public ICommand SaveAsCommand => new DelegateCommand(ShowSaveFileDialog);
 
 		private void ConvertImage()
 		{
@@ -52,11 +57,44 @@ namespace RGBtoGrey.ViewModel
 			ConvertedImage = ImageProcessingAdapter.ConvertImage(Presenter.FilePath);
 			watch.Stop();
 
-			
 			var elapsedMs = watch.ElapsedMilliseconds;
 			ConversionTime = Convert.ToString(elapsedMs) + "ms";
 
 			IsImageConverted = true;
 		}
+
+		private void ShowSaveFileDialog()
+		{
+			FileDialog.ShowDialog();
+			var ext = Path.GetExtension(FileDialog.FilePath);
+
+			Enum.TryParse(ext, out ImageFileFormats imageFormat);
+			ExportImageAsFile(imageFormat, FileDialog.FilePath);
+		}
+
+		private void ExportImageAsFile(ImageFileFormats imageFormat, string filePath)
+		{
+			BitmapEncoder encoder;
+			switch (imageFormat)
+			{
+				case ImageFileFormats.png:
+					encoder = new PngBitmapEncoder();
+					break;
+				case ImageFileFormats.bmp:
+					encoder = new BmpBitmapEncoder();
+					break;
+				default:
+					encoder = new JpegBitmapEncoder();
+					break;
+			};
+
+			encoder.Frames.Add(BitmapFrame.Create(ConvertedImage));
+
+			using (var fileStream = new FileStream(filePath, FileMode.Create))
+			{
+				encoder.Save(fileStream);
+			}
+		}
 	}
+	public enum ImageFileFormats { jpg, jpeg, png, bmp }
 }

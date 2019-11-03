@@ -12,14 +12,14 @@ namespace RGBtoGreyTests
 	public class ReadOriginalImageTests
 	{
 		private ReadOriginalImage _readOriginalImage;
-		private Mock<IOpenFileDialog> _fileDialogMock;
+		private Mock<IFileDialog> _fileDialogMock;
 		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 
 		[SetUp]
 		public void Setup()
 		{
 			_readOriginalImage = new ReadOriginalImage();
-			_fileDialogMock = new Mock<IOpenFileDialog>();
+			_fileDialogMock = new Mock<IFileDialog>();
 			_fileDialogMock.Setup(m => m.ShowDialog()).Returns(true);
 		}
 

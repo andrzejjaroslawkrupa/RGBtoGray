@@ -2,8 +2,10 @@
 using RGBtoGrey.ViewModel;
 using Moq;
 using System;
+using System.IO;
 using System.Windows.Media.Imaging;
 using ImgProcLib;
+using RGBtoGrey.FileDialog;
 
 namespace RGBtoGreyTests
 {
@@ -11,6 +13,7 @@ namespace RGBtoGreyTests
 	public class ReadConvertedImageTests
 	{
 		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
+		private readonly string _outputDir = TestContext.CurrentContext.TestDirectory + @"\\outputFile.jpg";
 		private BitmapImage _bitmapImage;
 		private Mock<IImageProcessingAdapter> _imageProcessingMock;
 
@@ -79,6 +82,25 @@ namespace RGBtoGreyTests
 			readConvertedImage.ConvertCommand.Execute(null);
 
 			Assert.That(readConvertedImage.IsImageConverted, Is.True);
+		}
+
+		[Test]
+		public void SaveAs_SaveAsCommandExecuted_ImageSavedAsJPG()
+		{
+			var bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
+			var fileDialogMock = new Mock<IFileDialog>();
+			_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>())).Returns(bitmapImage);
+			fileDialogMock.Setup(m => m.FilePath).Returns(_outputDir);
+			var readConvertedImage = new ReadConvertedImage
+			{
+				ImageProcessingAdapter = _imageProcessingMock.Object,
+				FileDialog = fileDialogMock.Object
+			};
+
+			readConvertedImage.ConvertCommand.Execute(null);
+			readConvertedImage.SaveAsCommand.Execute(null);
+
+			Assert.That(File.Exists(_outputDir));
 		}
 	}
 }

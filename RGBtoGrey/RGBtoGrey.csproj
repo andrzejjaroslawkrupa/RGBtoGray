@@ -72,8 +72,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FileDialog\IOpenFileDialog.cs" />
-    <Compile Include="FileDialog\OpenFileDialog.cs" />
+    <Compile Include="FileDialog\IFileDialog.cs" />
+    <Compile Include="FileDialog\FileDialog.cs" />
     <Compile Include="ViewModel\Presenter.cs" />
     <Compile Include="ViewModel\ReadConvertedImage.cs" />
     <Compile Include="ViewModel\ReadOriginalImage.cs" />

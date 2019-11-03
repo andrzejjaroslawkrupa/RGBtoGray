@@ -1,6 +1,6 @@
 ﻿namespace RGBtoGrey.FileDialog
 {
-	public interface IOpenFileDialog
+	public interface IFileDialog
 	{
 		string FilePath { get; }
 		bool? ShowDialog();

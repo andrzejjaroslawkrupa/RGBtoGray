@@ -30,12 +30,11 @@ namespace RGBtoGrey.ViewModel
 			}
 		}
 
-		public IOpenFileDialog FileDialog { get; set; } = new OpenFileDialog();
+		public IFileDialog FileDialog { get; set; } = new FileDialog.FileDialog(new Microsoft.Win32.OpenFileDialog());
 
+		public ICommand OpenFileDialogCommand => new DelegateCommand(ShowOpenFileDialog);
 
-		public ICommand OpenFileDialogCommand => new DelegateCommand(OpenFileDialog);
-
-		private void OpenFileDialog()
+		private void ShowOpenFileDialog()
 		{
 			if (FileDialog.ShowDialog() == true && ChangeImageFromPath(FileDialog.FilePath) == true)
 			{
