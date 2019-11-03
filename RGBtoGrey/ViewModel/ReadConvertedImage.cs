@@ -8,6 +8,7 @@ namespace RGBtoGrey.ViewModel
 	{
 		private BitmapImage _convertedImage;
 		private string _conversionTime;
+		private bool _isImageConverted = false;
 
 		public BitmapImage ConvertedImage
 		{
@@ -29,17 +30,33 @@ namespace RGBtoGrey.ViewModel
 			}
 		}
 
+		public bool IsImageConverted
+		{
+			get => _isImageConverted;
+			private set
+			{
+				_isImageConverted = value;
+				RaisePropertyChangedEvent("IsImageConverted");
+			}
+		}
+
 		public IImageProcessingAdapter ImageProcessingAdapter { get; set; } = new ImageProcessingAdapter();
 
 		public ICommand ConvertCommand => new DelegateCommand(ConvertImage);
 
 		private void ConvertImage()
 		{
+			IsImageConverted = false;
+
 			var watch = System.Diagnostics.Stopwatch.StartNew();
 			ConvertedImage = ImageProcessingAdapter.ConvertImage(Presenter.FilePath);
 			watch.Stop();
+
+			
 			var elapsedMs = watch.ElapsedMilliseconds;
 			ConversionTime = Convert.ToString(elapsedMs) + "ms";
+
+			IsImageConverted = true;
 		}
 	}
 }

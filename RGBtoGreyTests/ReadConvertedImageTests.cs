@@ -65,5 +65,20 @@ namespace RGBtoGreyTests
 
 			Assert.That(readConvertedImage.ConversionTime, Is.Not.EqualTo(null));
 		}
+
+		[Test]
+		public void ConvertImage_ConvertCommandExecuted_IsImageConvertedSetToTrue()
+		{
+			var readConvertedImage = new ReadConvertedImage
+			{
+				ImageProcessingAdapter = _imageProcessingMock.Object
+			};
+
+			Assert.That(readConvertedImage.IsImageConverted, Is.False);
+
+			readConvertedImage.ConvertCommand.Execute(null);
+
+			Assert.That(readConvertedImage.IsImageConverted, Is.True);
+		}
 	}
 }

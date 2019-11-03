@@ -20,7 +20,15 @@
 		</Grid.RowDefinitions>
 		<TextBlock Grid.Row="2" Text="After conversion:" Margin="10,0,0,0"/>
 		<Image Grid.Row="3" Source="{Binding ConvertedImage, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
-		<Button Content="Convert"  Grid.Row="4" VerticalAlignment="Center" Width="75" Command="{Binding ConvertCommand}"/>
+		<Grid Grid.Row="4">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Button Content="Convert"  Grid.Column="0" VerticalAlignment="Center" Width="75" Command="{Binding ConvertCommand}"/>
+			<Button Content="Save as..."  Grid.Column="1" VerticalAlignment="Center" Width="75" Command="{Binding SaveAsCommand}" IsEnabled="{Binding IsImageConverted}"/>
+		</Grid>
+		
 		<TextBlock Grid.Row="5" Text="{Binding ConversionTime, UpdateSourceTrigger=PropertyChanged, StringFormat='Time elapsed: {0}'}" Margin="10,0,0,0"/>
 	</Grid>
 </UserControl>
