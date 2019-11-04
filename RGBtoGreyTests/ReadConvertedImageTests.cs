@@ -159,6 +159,22 @@ namespace RGBtoGreyTests
 				Assert.That(!File.Exists(_outputFileWithoutExt));
 			}
 
+			[Test]
+			public void SaveAs_SaveAsCommandExecutedWithInvalidOutputPathSet_DoNothing()
+			{
+				_fileDialogMock.Setup(m => m.FilePath).Returns("");
+				var readConvertedImage = new ReadConvertedImage
+				{
+					ImageProcessingAdapter = _imageProcessingMock.Object,
+					FileDialog = _fileDialogMock.Object
+				};
+
+				readConvertedImage.ConvertCommand.Execute(null);
+				readConvertedImage.SaveAsCommand.Execute(null);
+
+				Assert.That(!File.Exists(_outputFileWithoutExt));
+			}
+
 			[TearDown]
 			public void TearDown()
 			{
