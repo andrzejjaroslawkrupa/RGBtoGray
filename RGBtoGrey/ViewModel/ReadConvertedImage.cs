@@ -74,6 +74,9 @@ namespace RGBtoGrey.ViewModel
 
 		private void ExportImageAsFile(ImageFileFormats imageFormat, string filePath)
 		{
+			if (string.IsNullOrEmpty(filePath))
+				return;
+
 			BitmapEncoder encoder;
 			switch (imageFormat)
 			{
@@ -83,9 +86,12 @@ namespace RGBtoGrey.ViewModel
 				case ImageFileFormats.bmp:
 					encoder = new BmpBitmapEncoder();
 					break;
-				default:
+				case ImageFileFormats.jpeg:
+				case ImageFileFormats.jpg:
 					encoder = new JpegBitmapEncoder();
 					break;
+				default:
+					return;
 			};
 
 			encoder.Frames.Add(BitmapFrame.Create(ConvertedImage));

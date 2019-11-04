@@ -9,98 +9,165 @@ using RGBtoGrey.FileDialog;
 
 namespace RGBtoGreyTests
 {
-	[TestFixture]
 	public class ReadConvertedImageTests
 	{
 		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
-		private readonly string _outputDir = TestContext.CurrentContext.TestDirectory + @"\\outputFile.jpg";
-		private BitmapImage _bitmapImage;
 		private Mock<IImageProcessingAdapter> _imageProcessingMock;
 
-		[SetUp]
-		public void Setup()
+		[TestFixture]
+		public class ConvertImageTests : ReadConvertedImageTests
 		{
-			_imageProcessingMock = new Mock<IImageProcessingAdapter>();
-			Presenter.FilePath = _testFilesDirectory;
+			[SetUp]
+			public void Setup()
+			{
+				_imageProcessingMock = new Mock<IImageProcessingAdapter>();
+				Presenter.FilePath = _testFilesDirectory;
+			}
+
+			private ReadConvertedImage Sut()
+			{
+				return new ReadConvertedImage
+				{
+					ImageProcessingAdapter = _imageProcessingMock.Object
+				};
+			}
+
+			[Test]
+			public void ConvertImage_ConvertCommandExecuted_ConvertImageUsedOnce()
+			{
+				ReadConvertedImage readConvertedImage = Sut();
+
+				readConvertedImage.ConvertCommand.Execute(null);
+
+				_imageProcessingMock.Verify(m => m.ConvertImage(It.IsAny<string>()), Times.Once);
+			}
+
+
+			[Test]
+			public void ConvertImage_ConvertCommandExecuted_ConvertedImageSet()
+			{
+				var bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
+				_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>()))
+					.Returns(bitmapImage);
+				var readConvertedImage = Sut();
+				var expected = ImageProcessing.GetBitmapPixels(bitmapImage);
+
+				readConvertedImage.ConvertCommand.Execute(null);
+				var actual = ImageProcessing.GetBitmapPixels(readConvertedImage.ConvertedImage);
+
+				Assert.That(actual, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void ConvertImage_ConvertCommandExecuted_ConversionTimeSet()
+			{
+				var readConvertedImage = Sut();
+
+				readConvertedImage.ConvertCommand.Execute(null);
+
+				Assert.That(readConvertedImage.ConversionTime, Is.Not.EqualTo(null));
+			}
+
+			[Test]
+			public void ConvertImage_ConvertCommandExecuted_IsImageConvertedSetToTrue()
+			{
+				var readConvertedImage = Sut();
+
+				Assert.That(readConvertedImage.IsImageConverted, Is.False);
+
+				readConvertedImage.ConvertCommand.Execute(null);
+
+				Assert.That(readConvertedImage.IsImageConverted, Is.True);
+			}
 		}
 
-		[Test]
-		public void ConvertImage_ConvertCommandExecuted_ConvertImageUsedOnce()
+		[TestFixture]
+		public class SaveAsTests : ReadConvertedImageTests
 		{
-			var readConvertedImage = new ReadConvertedImage
+			private readonly string _outputFileWithoutExt = TestContext.CurrentContext.TestDirectory + @"\\outputFile";
+			private BitmapImage _bitmapImage;
+			private Mock<IFileDialog> _fileDialogMock;
+			private readonly DirectoryInfo _testDirInfo = new DirectoryInfo(TestContext.CurrentContext.TestDirectory);
+
+			[SetUp]
+			public void Setup()
 			{
-				ImageProcessingAdapter = _imageProcessingMock.Object
-			};
+				_imageProcessingMock = new Mock<IImageProcessingAdapter>();
+				Presenter.FilePath = _testFilesDirectory;
+				_bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
+				_fileDialogMock = new Mock<IFileDialog>();
+				_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>())).Returns(_bitmapImage);
+			}
 
-			readConvertedImage.ConvertCommand.Execute(null);
-
-			_imageProcessingMock.Verify(m => m.ConvertImage(It.IsAny<string>()), Times.Once);
-		}
-
-		[Test]
-		public void ConvertImage_ConvertCommandExecuted_ConvertedImageSet()
-		{
-			_bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
-			_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>()))
-				.Returns(_bitmapImage);
-			var readConvertedImage = new ReadConvertedImage
+			private ReadConvertedImage Sut(string extention)
 			{
-				ImageProcessingAdapter = _imageProcessingMock.Object
-			};
-			var expected = ImageProcessing.GetBitmapPixels(_bitmapImage);
+				_fileDialogMock.Setup(m => m.FilePath).Returns(_outputFileWithoutExt + extention);
+				var readConvertedImage = new ReadConvertedImage
+				{
+					ImageProcessingAdapter = _imageProcessingMock.Object,
+					FileDialog = _fileDialogMock.Object
+				};
+				return readConvertedImage;
+			}
 
-			readConvertedImage.ConvertCommand.Execute(null);
-			var actual = ImageProcessing.GetBitmapPixels(readConvertedImage.ConvertedImage);
-
-			Assert.That(actual, Is.EqualTo(expected));
-		}
-
-		[Test]
-		public void ConvertImage_ConvertCommandExecuted_ConversionTimeSet()
-		{
-			_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>()));
-			var readConvertedImage = new ReadConvertedImage
+			[Test]
+			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsJPG()
 			{
-				ImageProcessingAdapter = _imageProcessingMock.Object
-			};
+				ReadConvertedImage readConvertedImage = Sut(".jpg");
 
-			readConvertedImage.ConvertCommand.Execute(null);
+				readConvertedImage.ConvertCommand.Execute(null);
+				readConvertedImage.SaveAsCommand.Execute(null);
 
-			Assert.That(readConvertedImage.ConversionTime, Is.Not.EqualTo(null));
-		}
+				Assert.That(File.Exists(_outputFileWithoutExt + ".jpg"));
+			}
 
-		[Test]
-		public void ConvertImage_ConvertCommandExecuted_IsImageConvertedSetToTrue()
-		{
-			var readConvertedImage = new ReadConvertedImage
+			[Test]
+			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsPNG()
 			{
-				ImageProcessingAdapter = _imageProcessingMock.Object
-			};
+				ReadConvertedImage readConvertedImage = Sut(".png");
 
-			Assert.That(readConvertedImage.IsImageConverted, Is.False);
+				readConvertedImage.ConvertCommand.Execute(null);
+				readConvertedImage.SaveAsCommand.Execute(null);
 
-			readConvertedImage.ConvertCommand.Execute(null);
+				Assert.That(File.Exists(_outputFileWithoutExt + ".png"));
+			}
 
-			Assert.That(readConvertedImage.IsImageConverted, Is.True);
-		}
-
-		[Test]
-		public void SaveAs_SaveAsCommandExecuted_ImageSavedAsJPG()
-		{
-			var bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
-			var fileDialogMock = new Mock<IFileDialog>();
-			_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>())).Returns(bitmapImage);
-			fileDialogMock.Setup(m => m.FilePath).Returns(_outputDir);
-			var readConvertedImage = new ReadConvertedImage
+			[Test]
+			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsBMP()
 			{
-				ImageProcessingAdapter = _imageProcessingMock.Object,
-				FileDialog = fileDialogMock.Object
-			};
+				ReadConvertedImage readConvertedImage = Sut(".bmp");
 
-			readConvertedImage.ConvertCommand.Execute(null);
-			readConvertedImage.SaveAsCommand.Execute(null);
+				readConvertedImage.ConvertCommand.Execute(null);
+				readConvertedImage.SaveAsCommand.Execute(null);
 
-			Assert.That(File.Exists(_outputDir));
+				Assert.That(File.Exists(_outputFileWithoutExt + ".bmp"));
+			}
+
+			[Test]
+			public void SaveAs_SaveAsCommandExecutedWithoutOutputPathSet_DoNothing()
+			{
+				_fileDialogMock.Setup(m => m.FilePath).Returns<string>(null);
+				var readConvertedImage = new ReadConvertedImage
+				{
+					ImageProcessingAdapter = _imageProcessingMock.Object,
+					FileDialog = _fileDialogMock.Object
+				};
+
+				readConvertedImage.ConvertCommand.Execute(null);
+				readConvertedImage.SaveAsCommand.Execute(null);
+
+				Assert.That(!File.Exists(_outputFileWithoutExt));
+			}
+
+			[TearDown]
+			public void TearDown()
+			{
+				foreach (FileInfo file in _testDirInfo.GetFiles())
+				{
+					if (file.Name.Contains("outputFile"))
+						file.Delete();
+				}
+			}
 		}
 	}
 }
