@@ -57,6 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\IImageProcessingAdapter.cs" />
+    <Compile Include="ViewModel\ImageFileExporting.cs" />
     <Compile Include="ViewModel\ImageProcessingAdapter.cs" />
     <Compile Include="View\ReadConvertedImageView.xaml.cs">
       <DependentUpon>ReadConvertedImageView.xaml</DependentUpon>

@@ -69,38 +69,11 @@ namespace RGBtoGrey.ViewModel
 			var ext = Path.GetExtension(FileDialog.FilePath);
 
 			Enum.TryParse(ext, out ImageFileFormats imageFormat);
-			ExportImageAsFile(imageFormat, FileDialog.FilePath);
+			var imageFileExporting = new ImageFileExporting(ConvertedImage);
+			imageFileExporting.ExportImageAsFile(imageFormat, FileDialog.FilePath);
 		}
 
-		private void ExportImageAsFile(ImageFileFormats imageFormat, string filePath)
-		{
-			if (string.IsNullOrEmpty(filePath))
-				return;
-
-			BitmapEncoder encoder;
-			switch (imageFormat)
-			{
-				case ImageFileFormats.png:
-					encoder = new PngBitmapEncoder();
-					break;
-				case ImageFileFormats.bmp:
-					encoder = new BmpBitmapEncoder();
-					break;
-				case ImageFileFormats.jpeg:
-				case ImageFileFormats.jpg:
-					encoder = new JpegBitmapEncoder();
-					break;
-				default:
-					return;
-			};
-
-			encoder.Frames.Add(BitmapFrame.Create(ConvertedImage));
-
-			using (var fileStream = new FileStream(filePath, FileMode.Create))
-			{
-				encoder.Save(fileStream);
-			}
-		}
+		
 	}
 	public enum ImageFileFormats { jpg, jpeg, png, bmp }
 }
