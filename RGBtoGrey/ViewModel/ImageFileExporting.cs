@@ -5,7 +5,7 @@ namespace RGBtoGrey.ViewModel
 {
 	class ImageFileExporting
 	{
-		private BitmapImage _bitmapImage;
+		private readonly BitmapImage _bitmapImage;
 
 		public ImageFileExporting(BitmapImage bitmapImage)
 		{
