@@ -27,25 +27,18 @@ namespace RGBtoGrey.ViewModel
 
 		private BitmapEncoder AssignProperBitmapEncoderFromFileFormat(ImageFileFormats imageFileFormat)
 		{
-			BitmapEncoder encoder;
-
 			switch (imageFileFormat)
 			{
 				case ImageFileFormats.png:
-					encoder = new PngBitmapEncoder();
-					break;
+					return new PngBitmapEncoder();
 				case ImageFileFormats.bmp:
-					encoder = new BmpBitmapEncoder();
-					break;
+					return new BmpBitmapEncoder();
 				case ImageFileFormats.jpeg:
 				case ImageFileFormats.jpg:
-					encoder = new JpegBitmapEncoder();
-					break;
+					return new JpegBitmapEncoder();
 				default:
 					return null;
 			};
-
-			return encoder;
 		}
 	}
 }
