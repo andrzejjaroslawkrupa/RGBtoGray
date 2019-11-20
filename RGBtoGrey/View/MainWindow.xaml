@@ -11,7 +11,7 @@
 			<ColumnDefinition Width="*" />
 			<ColumnDefinition Width="*" />
 		</Grid.ColumnDefinitions>
-		<uc:ReadOriginalImageView Grid.Column="0"/>
-		<uc:ReadConvertedImageView Grid.Column="1"/>
+		<uc:OriginalImageView Grid.Column="0"/>
+		<uc:ConvertedImageView Grid.Column="1"/>
 	</Grid>
 </Window>

@@ -1,8 +1,8 @@
 ﻿namespace RGBtoGrey.View
 {
-	public partial class MainWindow
+	public partial class ConvertedImageView
 	{
-		public MainWindow()
+		public ConvertedImageView()
 		{
 			InitializeComponent();
 		}

@@ -59,11 +59,11 @@
     <Compile Include="ViewModel\IImageProcessingAdapter.cs" />
     <Compile Include="ViewModel\ImageFileExporting.cs" />
     <Compile Include="ViewModel\ImageProcessingAdapter.cs" />
-    <Compile Include="View\ReadConvertedImageView.xaml.cs">
-      <DependentUpon>ReadConvertedImageView.xaml</DependentUpon>
+    <Compile Include="View\ConvertedImageView.xaml.cs">
+      <DependentUpon>ConvertedImageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ReadOriginalImageView.xaml.cs">
-      <DependentUpon>ReadOriginalImageView.xaml</DependentUpon>
+    <Compile Include="View\OriginalImageView.xaml.cs">
+      <DependentUpon>OriginalImageView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -76,19 +76,19 @@
     <Compile Include="FileDialog\IFileDialog.cs" />
     <Compile Include="FileDialog\FileDialog.cs" />
     <Compile Include="ViewModel\Presenter.cs" />
-    <Compile Include="ViewModel\ReadConvertedImage.cs" />
-    <Compile Include="ViewModel\ReadOriginalImage.cs" />
+    <Compile Include="ViewModel\ConvertedImageViewModel.cs" />
+    <Compile Include="ViewModel\OriginalImageViewModel.cs" />
     <Compile Include="ViewModel\DelegateCommand.cs" />
     <Compile Include="ViewModel\ObservableObject.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\ReadConvertedImageView.xaml">
+    <Page Include="View\ConvertedImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ReadOriginalImageView.xaml">
+    <Page Include="View\OriginalImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

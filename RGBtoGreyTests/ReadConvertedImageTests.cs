@@ -24,9 +24,9 @@ namespace RGBtoGreyTests
 				Presenter.FilePath = _testFilesDirectory;
 			}
 
-			private ReadConvertedImage Sut()
+			private ConvertedImageViewModel Sut()
 			{
-				return new ReadConvertedImage
+				return new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object
 				};
@@ -35,7 +35,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_ConvertImageUsedOnce()
 			{
-				ReadConvertedImage readConvertedImage = Sut();
+				ConvertedImageViewModel readConvertedImage = Sut();
 
 				readConvertedImage.ConvertCommand.Execute(null);
 
@@ -99,10 +99,10 @@ namespace RGBtoGreyTests
 				_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>())).Returns(_bitmapImage);
 			}
 
-			private ReadConvertedImage Sut(string extention)
+			private ConvertedImageViewModel Sut(string extention)
 			{
 				_fileDialogMock.Setup(m => m.FilePath).Returns(_outputFileWithoutExt + extention);
-				var readConvertedImage = new ReadConvertedImage
+				var readConvertedImage = new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
 					FileDialog = _fileDialogMock.Object
@@ -113,7 +113,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsJPG()
 			{
-				ReadConvertedImage readConvertedImage = Sut(".jpg");
+				ConvertedImageViewModel readConvertedImage = Sut(".jpg");
 
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
@@ -124,7 +124,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsPNG()
 			{
-				ReadConvertedImage readConvertedImage = Sut(".png");
+				ConvertedImageViewModel readConvertedImage = Sut(".png");
 
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
@@ -135,7 +135,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsBMP()
 			{
-				ReadConvertedImage readConvertedImage = Sut(".bmp");
+				ConvertedImageViewModel readConvertedImage = Sut(".bmp");
 
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
@@ -147,7 +147,7 @@ namespace RGBtoGreyTests
 			public void SaveAs_SaveAsCommandExecutedWithoutOutputPathSet_DoNothing()
 			{
 				_fileDialogMock.Setup(m => m.FilePath).Returns<string>(null);
-				var readConvertedImage = new ReadConvertedImage
+				var readConvertedImage = new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
 					FileDialog = _fileDialogMock.Object
@@ -163,7 +163,7 @@ namespace RGBtoGreyTests
 			public void SaveAs_SaveAsCommandExecutedWithInvalidOutputPathSet_DoNothing()
 			{
 				_fileDialogMock.Setup(m => m.FilePath).Returns("");
-				var readConvertedImage = new ReadConvertedImage
+				var readConvertedImage = new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
 					FileDialog = _fileDialogMock.Object

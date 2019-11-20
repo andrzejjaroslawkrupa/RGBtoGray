@@ -6,7 +6,7 @@ using RGBtoGrey.FileDialog;
 
 namespace RGBtoGrey.ViewModel
 {
-	public class ReadConvertedImage : ObservableObject
+	public class ConvertedImageViewModel : ObservableObject
 	{
 		private BitmapImage _convertedImage;
 		private string _conversionTime;
