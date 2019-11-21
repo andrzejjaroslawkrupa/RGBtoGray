@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Linq.Expressions;
 
 namespace RGBtoGrey.ViewModel
 {
@@ -6,9 +8,15 @@ namespace RGBtoGrey.ViewModel
 	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		protected void RaisePropertyChangedEvent(string propertyName)
+		private void RaisePropertyChangedEvent(string propertyName)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+		protected void OnPropertyChanged<T>(Expression<Func<T>> expression)
+		{
+			var name = (expression.Body as MemberExpression).Member.Name;
+			RaisePropertyChangedEvent(name);
 		}
 	}
 }

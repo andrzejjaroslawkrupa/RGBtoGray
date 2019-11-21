@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using RGBtoGrey.FileDialog;
@@ -16,7 +17,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_filename = value;
-				RaisePropertyChangedEvent("Filename");
+				OnPropertyChanged(() => Filename);
 			}
 		}
 
@@ -26,7 +27,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_originalImage = value;
-				RaisePropertyChangedEvent("OriginalImage");
+				OnPropertyChanged(() => OriginalImage);
 			}
 		}
 

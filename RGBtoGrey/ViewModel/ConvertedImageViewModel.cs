@@ -18,7 +18,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_convertedImage = value;
-				RaisePropertyChangedEvent("ConvertedImage");
+				OnPropertyChanged(() => ConvertedImage);
 			}
 		}
 
@@ -28,7 +28,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_conversionTime = value;
-				RaisePropertyChangedEvent("ConversionTime");
+				OnPropertyChanged(() => ConversionTime);
 			}
 		}
 
@@ -38,7 +38,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_isImageConverted = value;
-				RaisePropertyChangedEvent("IsImageConverted");
+				OnPropertyChanged(() => IsImageConverted);
 			}
 		}
 
@@ -72,8 +72,6 @@ namespace RGBtoGrey.ViewModel
 			var imageFileExporting = new ImageFileExporting(ConvertedImage);
 			imageFileExporting.ExportImageAsFile(imageFormat, FileDialog.FilePath);
 		}
-
-		
 	}
 	public enum ImageFileFormats { jpg, jpeg, png, bmp }
 }
