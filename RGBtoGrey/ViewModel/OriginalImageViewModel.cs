@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq.Expressions;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using RGBtoGrey.FileDialog;
