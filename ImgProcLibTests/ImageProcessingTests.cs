@@ -9,22 +9,15 @@ namespace ImgProcLibTests
 	public class ImageProcessingTests
 	{
 		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles";
-		private ImageProcessing _imageProcessing;
 		private readonly string _blackTestImage = @"\\blackTestImage.jpg";
 		private readonly string _redTestImage = @"\\redTestImage.jpg";
-
-		[SetUp]
-		public void Setup()
-		{
-			_imageProcessing = new ImageProcessing();
-		}
 
 		[Test]
 		public void ConvertToGreyscale_BlackImage_ImageUnchanged()
 		{
 			var originalImage = new BitmapImage(new Uri(_testFilesDirectory + _blackTestImage));
 
-			var convertedImage = _imageProcessing.ConvertBitmapImageToGreyscale(originalImage);
+			var convertedImage = ImageProcessing.ConvertBitmapImageToGreyscale(originalImage);
 
 			CollectionAssert.AreEqual(ImageProcessing.GetBitmapPixels(convertedImage), ImageProcessing.GetBitmapPixels(originalImage));
 		}
@@ -35,7 +28,7 @@ namespace ImgProcLibTests
 			var originalImage = new BitmapImage(new Uri(_testFilesDirectory + _redTestImage));
 			var expected = new byte[] { 44, 44, 44, 255 };
 
-			var convertedImage = _imageProcessing.ConvertBitmapImageToGreyscale(originalImage);
+			var convertedImage = ImageProcessing.ConvertBitmapImageToGreyscale(originalImage);
 
 			CollectionAssert.AreEqual(expected, ImageProcessing.GetBitmapPixels(convertedImage));
 		}

@@ -8,11 +8,10 @@ namespace RGBtoGrey.ViewModel
 	{
 		public BitmapImage ConvertImage(string path)
 		{
-			var imageProcessing = new ImageProcessing();
 			var uri = new Uri(path);
 			var originalImage = new BitmapImage(uri);
 
-			return imageProcessing.ConvertBitmapImageToGreyscale(originalImage);
+			return ImageProcessing.ConvertBitmapImageToGreyscale(originalImage);
 		}
 	}
 }
