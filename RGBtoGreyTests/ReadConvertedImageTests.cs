@@ -24,7 +24,7 @@ namespace RGBtoGreyTests
 				Presenter.FilePath = _testFilesDirectory;
 			}
 
-			private ConvertedImageViewModel Sut()
+			private ConvertedImageViewModel GetSut()
 			{
 				return new ConvertedImageViewModel
 				{
@@ -35,7 +35,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_ConvertImageUsedOnce()
 			{
-				ConvertedImageViewModel readConvertedImage = Sut();
+				ConvertedImageViewModel readConvertedImage = GetSut();
 
 				readConvertedImage.ConvertCommand.Execute(null);
 
@@ -49,7 +49,7 @@ namespace RGBtoGreyTests
 				var bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
 				_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>()))
 					.Returns(bitmapImage);
-				var readConvertedImage = Sut();
+				var readConvertedImage = GetSut();
 				var expected = ImageProcessing.GetBitmapPixels(bitmapImage);
 
 				readConvertedImage.ConvertCommand.Execute(null);
@@ -61,7 +61,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_ConversionTimeSet()
 			{
-				var readConvertedImage = Sut();
+				var readConvertedImage = GetSut();
 
 				readConvertedImage.ConvertCommand.Execute(null);
 
@@ -71,7 +71,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_IsImageConvertedSetToTrue()
 			{
-				var readConvertedImage = Sut();
+				var readConvertedImage = GetSut();
 
 				Assert.That(readConvertedImage.IsImageConverted, Is.False);
 
@@ -99,9 +99,9 @@ namespace RGBtoGreyTests
 				_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>())).Returns(_bitmapImage);
 			}
 
-			private ConvertedImageViewModel Sut(string extention)
+			private ConvertedImageViewModel GetSutWithExtension(string extension)
 			{
-				_fileDialogMock.Setup(m => m.FilePath).Returns(_outputFileWithoutExt + extention);
+				_fileDialogMock.Setup(m => m.FilePath).Returns(_outputFileWithoutExt + extension);
 				var readConvertedImage = new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
@@ -113,7 +113,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsJPG()
 			{
-				ConvertedImageViewModel readConvertedImage = Sut(".jpg");
+				ConvertedImageViewModel readConvertedImage = GetSutWithExtension(".jpg");
 
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
@@ -124,7 +124,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsPNG()
 			{
-				ConvertedImageViewModel readConvertedImage = Sut(".png");
+				ConvertedImageViewModel readConvertedImage = GetSutWithExtension(".png");
 
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
@@ -135,7 +135,7 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsBMP()
 			{
-				ConvertedImageViewModel readConvertedImage = Sut(".bmp");
+				ConvertedImageViewModel readConvertedImage = GetSutWithExtension(".bmp");
 
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
