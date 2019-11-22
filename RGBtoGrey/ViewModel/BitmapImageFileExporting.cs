@@ -3,21 +3,15 @@ using System.Windows.Media.Imaging;
 
 namespace RGBtoGrey.ViewModel
 {
-	class ImageFileExporting
+	class BitmapImageFileExporting : IBitmapImageFileExporting
 	{
-		private readonly BitmapImage _bitmapImage;
-
-		public ImageFileExporting(BitmapImage bitmapImage)
-		{
-			_bitmapImage = bitmapImage;
-		}
-		public void ExportImageAsFile(ImageFileFormats imageFormat, string outputPath)
+		public void ExportImageAsFile(BitmapImage bitmapImage, ImageFileFormats imageFormat, string outputPath)
 		{
 			if (string.IsNullOrEmpty(outputPath))
 				return;
 
 			var encoder = AssignProperBitmapEncoderFromFileFormat(imageFormat);
-			encoder.Frames.Add(BitmapFrame.Create(_bitmapImage));
+			encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
 
 			using (var fileStream = new FileStream(outputPath, FileMode.Create))
 			{

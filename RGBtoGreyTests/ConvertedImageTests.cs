@@ -91,27 +91,26 @@ namespace RGBtoGreyTests
 		public class SaveAsTests : ConvertedImageTests
 		{
 			private readonly string _outputFileWithoutExt = TestContext.CurrentContext.TestDirectory + @"\\outputFile";
-			private BitmapImage _bitmapImage;
 			private Mock<IFileDialog> _fileDialogMock;
-			private readonly DirectoryInfo _testDirInfo = new DirectoryInfo(TestContext.CurrentContext.TestDirectory);
+			private Mock<IBitmapImageFileExporting> _bitmapFileExportingMock;
 
 			[SetUp]
 			public void Setup()
 			{
 				_imageProcessingMock = new Mock<IImageProcessingAdapter>();
-				Presenter.FilePath = _testFilesDirectory;
-				_bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
 				_fileDialogMock = new Mock<IFileDialog>();
-				_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>())).Returns(_bitmapImage);
+				_bitmapFileExportingMock = new Mock<IBitmapImageFileExporting>();
 			}
 
 			private ConvertedImageViewModel GetSutWithExtension(string extension)
 			{
 				_fileDialogMock.Setup(m => m.FilePath).Returns(_outputFileWithoutExt + extension);
+				Presenter.FilePath = _outputFileWithoutExt + extension;
 				var readConvertedImage = new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
-					FileDialog = _fileDialogMock.Object
+					FileDialog = _fileDialogMock.Object,
+					BitmapImageFileExporting = _bitmapFileExportingMock.Object
 				};
 				return readConvertedImage;
 			}
@@ -124,7 +123,8 @@ namespace RGBtoGreyTests
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
 
-				Assert.That(File.Exists(_outputFileWithoutExt + ".jpg"));
+				_bitmapFileExportingMock.Verify(
+				m => m.ExportImageAsFile(It.IsAny<BitmapImage>(), ImageFileFormats.jpg, It.IsAny<string>()), Times.Once);
 			}
 
 			[Test]
@@ -135,7 +135,8 @@ namespace RGBtoGreyTests
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
 
-				Assert.That(File.Exists(_outputFileWithoutExt + ".png"));
+				_bitmapFileExportingMock.Verify(
+				m => m.ExportImageAsFile(It.IsAny<BitmapImage>(), ImageFileFormats.png, It.IsAny<string>()), Times.Once);
 			}
 
 			[Test]
@@ -146,7 +147,8 @@ namespace RGBtoGreyTests
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
 
-				Assert.That(File.Exists(_outputFileWithoutExt + ".bmp"));
+				_bitmapFileExportingMock.Verify(
+				m => m.ExportImageAsFile(It.IsAny<BitmapImage>(), ImageFileFormats.bmp, It.IsAny<string>()), Times.Once);
 			}
 
 			[Test]
@@ -156,39 +158,25 @@ namespace RGBtoGreyTests
 				var readConvertedImage = new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
-					FileDialog = _fileDialogMock.Object
+					FileDialog = _fileDialogMock.Object,
+					BitmapImageFileExporting = _bitmapFileExportingMock.Object
 				};
 
 				readConvertedImage.ConvertCommand.Execute(null);
 				readConvertedImage.SaveAsCommand.Execute(null);
 
-				Assert.That(!File.Exists(_outputFileWithoutExt));
+				_bitmapFileExportingMock.Verify(
+				m => m.ExportImageAsFile(It.IsAny<BitmapImage>(), It.IsAny<ImageFileFormats>(), It.IsAny<string>()), Times.Never);
 			}
 
 			[Test]
-			public void SaveAs_SaveAsCommandExecutedWithInvalidOutputPathSet_DoNothing()
+			public void SaveAs_SaveAsCommandExecutedWithInvalidOutputPathSet_ExceptionThrown()
 			{
-				_fileDialogMock.Setup(m => m.FilePath).Returns("");
-				var readConvertedImage = new ConvertedImageViewModel
-				{
-					ImageProcessingAdapter = _imageProcessingMock.Object,
-					FileDialog = _fileDialogMock.Object
-				};
+				ConvertedImageViewModel readConvertedImage = GetSutWithExtension("");
 
 				readConvertedImage.ConvertCommand.Execute(null);
-				readConvertedImage.SaveAsCommand.Execute(null);
 
-				Assert.That(!File.Exists(_outputFileWithoutExt));
-			}
-
-			[TearDown]
-			public void TearDown()
-			{
-				foreach (FileInfo file in _testDirInfo.GetFiles())
-				{
-					if (file.Name.Contains("outputFile"))
-						file.Delete();
-				}
+				Assert.That(() => readConvertedImage.SaveAsCommand.Execute(null), Throws.Exception.TypeOf<FileFormatException>());
 			}
 		}
 	}

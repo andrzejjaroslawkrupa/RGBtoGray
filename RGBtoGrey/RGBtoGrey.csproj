@@ -56,8 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\IBitmapImageFileExporting.cs" />
     <Compile Include="ViewModel\IImageProcessingAdapter.cs" />
-    <Compile Include="ViewModel\ImageFileExporting.cs" />
+    <Compile Include="ViewModel\BitmapImageFileExporting.cs" />
     <Compile Include="ViewModel\ImageProcessingAdapter.cs" />
     <Compile Include="View\ConvertedImageView.xaml.cs">
       <DependentUpon>ConvertedImageView.xaml</DependentUpon>

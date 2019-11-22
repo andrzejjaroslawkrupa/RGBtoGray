@@ -45,6 +45,7 @@ namespace RGBtoGrey.ViewModel
 		public IImageProcessingAdapter ImageProcessingAdapter { get; set; } = new ImageProcessingAdapter();
 
 		public IFileDialog FileDialog { get; set; } = new FileDialog.FileDialog(new Microsoft.Win32.SaveFileDialog());
+		public IBitmapImageFileExporting BitmapImageFileExporting { get; set; } = new BitmapImageFileExporting();
 
 		public ICommand ConvertCommand => new DelegateCommand(ConvertImage);
 		public ICommand SaveAsCommand => new DelegateCommand(ShowSaveFileDialog);
@@ -66,11 +67,21 @@ namespace RGBtoGrey.ViewModel
 		private void ShowSaveFileDialog()
 		{
 			FileDialog.ShowDialog();
+			if (string.IsNullOrEmpty(FileDialog.FilePath))
+				return;
 			var ext = Path.GetExtension(FileDialog.FilePath);
+			try
+			{
+				ext = ext.Substring(1);
+			}
+			catch (Exception)
+			{
+				throw new FileFormatException();
+			}
+			
 
-			Enum.TryParse(ext, out ImageFileFormats imageFormat);
-			var imageFileExporting = new ImageFileExporting(ConvertedImage);
-			imageFileExporting.ExportImageAsFile(imageFormat, FileDialog.FilePath);
+			if (Enum.TryParse(ext, out ImageFileFormats imageFormat))
+				BitmapImageFileExporting.ExportImageAsFile(ConvertedImage, imageFormat, FileDialog.FilePath);
 		}
 	}
 	public enum ImageFileFormats { jpg, jpeg, png, bmp }
