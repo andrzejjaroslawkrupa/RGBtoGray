@@ -56,8 +56,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ReadConvertedImageTests.cs" />
-    <Compile Include="ReadOriginalImageTests.cs" />
+    <Compile Include="ConvertedImageTests.cs" />
+    <Compile Include="OriginalImageTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

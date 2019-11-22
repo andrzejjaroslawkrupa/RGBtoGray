@@ -9,13 +9,13 @@ using RGBtoGrey.FileDialog;
 
 namespace RGBtoGreyTests
 {
-	public class ReadConvertedImageTests
+	public class ConvertedImageTests
 	{
 		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 		private Mock<IImageProcessingAdapter> _imageProcessingMock;
 
 		[TestFixture]
-		public class ConvertImageTests : ReadConvertedImageTests
+		public class ConvertImageTests : ConvertedImageTests
 		{
 			[SetUp]
 			public void Setup()
@@ -35,9 +35,9 @@ namespace RGBtoGreyTests
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_ConvertImageUsedOnce()
 			{
-				ConvertedImageViewModel readConvertedImage = GetSut();
+				ConvertedImageViewModel convertedImageVM = GetSut();
 
-				readConvertedImage.ConvertCommand.Execute(null);
+				convertedImageVM.ConvertCommand.Execute(null);
 
 				_imageProcessingMock.Verify(m => m.ConvertImage(It.IsAny<string>()), Times.Once);
 			}
@@ -82,7 +82,7 @@ namespace RGBtoGreyTests
 		}
 
 		[TestFixture]
-		public class SaveAsTests : ReadConvertedImageTests
+		public class SaveAsTests : ConvertedImageTests
 		{
 			private readonly string _outputFileWithoutExt = TestContext.CurrentContext.TestDirectory + @"\\outputFile";
 			private BitmapImage _bitmapImage;
