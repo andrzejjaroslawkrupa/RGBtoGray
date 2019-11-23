@@ -3,7 +3,7 @@ using System.Windows.Media.Imaging;
 
 namespace RGBtoGrey.ViewModel
 {
-	class BitmapImageFileExporting : IBitmapImageFileExporting
+	public class BitmapImageFileExporting : IBitmapImageFileExporting
 	{
 		public void ExportImageAsFile(BitmapImage bitmapImage, ImageFileFormats imageFormat, string outputPath)
 		{
