@@ -18,10 +18,10 @@
 			<RowDefinition Height="40" />
 			<RowDefinition Height="40" />
 		</Grid.RowDefinitions>
-		<TextBlock Grid.Row="0" Text="{Binding Filename, UpdateSourceTrigger=PropertyChanged,
+		<TextBlock Grid.Row="0" Text="{Binding Filename,
 			StringFormat='File name: {0}'}" Grid.RowSpan="2" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,0,0,0"/>
 		<TextBlock Grid.Row="2" Text="Before conversion:" Margin="10,0,0,0"/>
-		<Image Grid.Row="3" Source="{Binding OriginalImage, UpdateSourceTrigger=PropertyChanged}" Margin="10,0,10,0"/>
+		<Image Grid.Row="3" Source="{Binding OriginalImage}" Margin="10,0,10,0"/>
 		<Button Content="Open file"  Grid.Row="4" VerticalAlignment="Center" Width="75" Command="{Binding OpenFileDialogCommand}"/>
 	</Grid>
 </UserControl>
