@@ -7,7 +7,7 @@ using RGBtoGrey.ViewModel;
 namespace RGBtoGreyTests
 {
 	[TestFixture]
-	internal class BitmapImageFileExportingTests
+	public class BitmapImageFileExportingTests
 	{
 		private readonly string _testFileDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 		private readonly string _outputFileWithoutExt = TestContext.CurrentContext.TestDirectory + @"\\outputFile";
