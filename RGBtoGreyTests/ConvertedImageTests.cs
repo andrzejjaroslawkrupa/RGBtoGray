@@ -11,12 +11,13 @@ namespace RGBtoGreyTests
 {
 	public class ConvertedImageTests
 	{
-		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 		private Mock<IImageProcessingAdapter> _imageProcessingMock;
 
 		[TestFixture]
 		public class ConvertImageTests : ConvertedImageTests
 		{
+			private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
+			
 			[SetUp]
 			public void Setup()
 			{
