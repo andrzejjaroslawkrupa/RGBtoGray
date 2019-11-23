@@ -54,6 +54,38 @@ namespace RGBtoGreyTests
 			Assert.That(File.Exists(_outputFileWithoutExt + ".png"));
 		}
 
+		[Test]
+		public void ExportImageAsFile_NullImage_ExceptionThrown()
+		{
+			Assert.That(
+				()=>_bitmapImageFileExporting.ExportImageAsFile(null, ImageFileFormats.jpg, _outputFileWithoutExt + ".jpg"),
+				Throws.ArgumentNullException);
+		}
+
+		[Test]
+		public void ExportImageAsFile_InvalidOutputPath_ExceptionThrown()
+		{
+			Assert.That(
+				() => _bitmapImageFileExporting.ExportImageAsFile(_testBitmapImage, ImageFileFormats.jpg, "xx"),
+				Throws.Exception.TypeOf<ArgumentException>());
+		}
+
+		[Test]
+		public void ExportImageAsFile_EmptyOutputPath_ExceptionThrown()
+		{
+			Assert.That(
+				() => _bitmapImageFileExporting.ExportImageAsFile(_testBitmapImage, ImageFileFormats.jpg, ""),
+				Throws.Exception.TypeOf<ArgumentException>());
+		}
+
+		[Test]
+		public void ExportImageAsFile_NullOutputPath_ExceptionThrown()
+		{
+			Assert.That(
+				() => _bitmapImageFileExporting.ExportImageAsFile(_testBitmapImage, ImageFileFormats.jpg, null),
+				Throws.ArgumentNullException);
+		}
+
 		[TearDown]
 		public void TearDown()
 		{
