@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using ImgProcLib;
 using RGBtoGrey.FileDialog;
+using RGBtoGrey.ViewModel.Interfaces;
 
 namespace RGBtoGreyTests
 {

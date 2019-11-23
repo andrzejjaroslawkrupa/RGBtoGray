@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using RGBtoGrey.FileDialog;
+using RGBtoGrey.ViewModel.Interfaces;
 
 namespace RGBtoGrey.ViewModel
 {
@@ -79,7 +80,6 @@ namespace RGBtoGrey.ViewModel
 				throw new FileFormatException();
 			}
 			
-
 			if (Enum.TryParse(ext, out ImageFileFormats imageFormat))
 				BitmapImageFileExporting.ExportImageAsFile(ConvertedImage, imageFormat, FileDialog.FilePath);
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Media.Imaging;
 using ImgProcLib;
+using RGBtoGrey.ViewModel.Interfaces;
 
 namespace RGBtoGrey.ViewModel
 {

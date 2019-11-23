@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace RGBtoGrey.ViewModel
+namespace RGBtoGrey.ViewModel.Interfaces
 {
 	public interface IBitmapImageFileExporting
 	{
