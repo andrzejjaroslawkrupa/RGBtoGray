@@ -9,11 +9,11 @@ namespace RGBtoGrey.ViewModel
 {
 	public class ConvertedImageViewModel : ObservableObject
 	{
-		private BitmapImage _convertedImage;
+		private BitmapSource _convertedImage;
 		private string _conversionTime;
 		private bool _isImageConverted = false;
 
-		public BitmapImage ConvertedImage
+		public BitmapSource ConvertedImage
 		{
 			get => _convertedImage;
 			private set

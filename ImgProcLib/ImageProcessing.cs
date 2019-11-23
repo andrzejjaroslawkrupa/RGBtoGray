@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace ImgProcLib
@@ -10,16 +9,16 @@ namespace ImgProcLib
 		private const double G = 0.7152;
 		private const double B = 0.0722;
 
-		public static BitmapImage ConvertBitmapImageToGreyscale(BitmapImage bitmapImage)
+		public static BitmapSource ConvertBitmapImageToGreyscale(BitmapSource bitmapSource)
 		{
-			var pixels = GetBitmapPixels(bitmapImage);
+			var pixels = GetBitmapPixels(bitmapSource);
 
 			pixels = ConvertPixelsToGreyscale(pixels);
 
-			return CreateImage(bitmapImage, pixels);
+			return CreateImage(bitmapSource, pixels);
 		}
 
-		public static byte[] GetBitmapPixels(BitmapImage bitmapImage)
+		public static byte[] GetBitmapPixels(BitmapSource bitmapImage)
 		{
 			if (bitmapImage == null)
 				throw new ArgumentNullException();
@@ -44,29 +43,13 @@ namespace ImgProcLib
 			return pixels;
 		}
 
-		private static BitmapImage CreateImage(BitmapSource bitmapImage, byte[] pixels)
+		private static BitmapSource CreateImage(BitmapSource bitmapImage, byte[] pixels)
 		{
 			var stride = DetermineStride(bitmapImage);
 
 			var bitmapSource = BitmapSource.Create(bitmapImage.PixelWidth, bitmapImage.PixelHeight, bitmapImage.DpiX, bitmapImage.DpiY, bitmapImage.Format, bitmapImage.Palette, pixels, stride);
 
-			return ConvertBitmapSourceToBitmapImage(bitmapSource);
-		}
-
-		private static BitmapImage ConvertBitmapSourceToBitmapImage(BitmapSource bitmapSource)
-		{
-			var encoder = new JpegBitmapEncoder();
-
-			encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
-			var memoryStream = new MemoryStream();
-			encoder.Save(memoryStream);
-
-			memoryStream.Position = 0;
-			var convertedBitmapImage = new BitmapImage();
-			convertedBitmapImage.BeginInit();
-			convertedBitmapImage.StreamSource = memoryStream;
-			convertedBitmapImage.EndInit();
-			return convertedBitmapImage;
+			return bitmapSource;
 		}
 
 		private static int DetermineStride(BitmapSource bitmapImage) =>

@@ -4,6 +4,6 @@ namespace RGBtoGrey.ViewModel.Interfaces
 {
 	public interface IImageProcessingAdapter
 	{
-		BitmapImage ConvertImage(string path);
+		BitmapSource ConvertImage(string path);
 	}
 }

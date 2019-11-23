@@ -7,16 +7,16 @@ namespace RGBtoGrey.ViewModel
 {
 	public class BitmapImageFileExporting : IBitmapImageFileExporting
 	{
-		public void ExportImageAsFile(BitmapImage bitmapImage, ImageFileFormats imageFormat, string outputPath)
+		public void ExportImageAsFile(BitmapSource bitmapSource, ImageFileFormats imageFormat, string outputPath)
 		{
-			if (bitmapImage is null || outputPath is null)
+			if (bitmapSource is null || outputPath is null)
 				throw new ArgumentNullException();
 
 			if (string.IsNullOrEmpty(outputPath) || IsPathValid(outputPath))
 				throw new ArgumentException("Invalid output path");
 
 			var encoder = AssignProperBitmapEncoderFromFileFormat(imageFormat);
-			encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
+			encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
 
 			using (var fileStream = new FileStream(outputPath, FileMode.Create))
 			{
