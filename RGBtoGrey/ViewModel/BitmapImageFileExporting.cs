@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace RGBtoGrey.ViewModel
@@ -7,8 +8,11 @@ namespace RGBtoGrey.ViewModel
 	{
 		public void ExportImageAsFile(BitmapImage bitmapImage, ImageFileFormats imageFormat, string outputPath)
 		{
-			if (string.IsNullOrEmpty(outputPath))
-				return;
+			if (bitmapImage is null || outputPath is null)
+				throw new ArgumentNullException();
+
+			if (string.IsNullOrEmpty(outputPath) || IsPathValid(outputPath))
+				throw new ArgumentException("Invalid output path");
 
 			var encoder = AssignProperBitmapEncoderFromFileFormat(imageFormat);
 			encoder.Frames.Add(BitmapFrame.Create(bitmapImage));
@@ -33,6 +37,19 @@ namespace RGBtoGrey.ViewModel
 				default:
 					return null;
 			};
+		}
+
+		private bool IsPathValid(string path)
+		{
+			try
+			{
+				path = Path.GetDirectoryName(path);
+			}
+			catch (Exception)
+			{
+				throw new ArgumentException("Invalid directory");
+			}
+			return !Directory.Exists(path);
 		}
 	}
 }
