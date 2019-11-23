@@ -35,9 +35,9 @@ namespace RGBtoGreyTests
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_ConvertImageUsedOnce()
 			{
-				ConvertedImageViewModel convertedImageVM = GetSut();
+				var convertedImageViewModel = GetSut();
 
-				convertedImageVM.ConvertCommand.Execute(null);
+				convertedImageViewModel.ConvertCommand.Execute(null);
 
 				_imageProcessingMock.Verify(m => m.ConvertImage(It.IsAny<string>()), Times.Once);
 			}
@@ -61,29 +61,29 @@ namespace RGBtoGreyTests
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_ConversionTimeSet()
 			{
-				var readConvertedImage = GetSut();
+				var convertedImageViewModel = GetSut();
 
-				readConvertedImage.ConvertCommand.Execute(null);
+				convertedImageViewModel.ConvertCommand.Execute(null);
 
-				Assert.That(readConvertedImage.ConversionTime, Is.Not.EqualTo(null));
+				Assert.That(convertedImageViewModel.ConversionTime, Is.Not.EqualTo(null));
 			}
 
 			[Test]
 			public void ConvertImage_ConvertCommandIsNotExecuted_IsImageConvertedSetToFalse()
 			{
-				var readConvertedImage = GetSut();
+				var convertedImageViewModel = GetSut();
 
-				Assert.That(readConvertedImage.IsImageConverted, Is.False);
+				Assert.That(convertedImageViewModel.IsImageConverted, Is.False);
 			}
 
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_IsImageConvertedSetToTrue()
 			{
-				var readConvertedImage = GetSut();
+				var convertedImageViewModel = GetSut();
 
-				readConvertedImage.ConvertCommand.Execute(null);
+				convertedImageViewModel.ConvertCommand.Execute(null);
 
-				Assert.That(readConvertedImage.IsImageConverted, Is.True);
+				Assert.That(convertedImageViewModel.IsImageConverted, Is.True);
 			}
 		}
 
@@ -106,22 +106,22 @@ namespace RGBtoGreyTests
 			{
 				_fileDialogMock.Setup(m => m.FilePath).Returns(_outputFileWithoutExt + extension);
 				Presenter.FilePath = _outputFileWithoutExt + extension;
-				var readConvertedImage = new ConvertedImageViewModel
+				var convertedImageViewModel = new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
 					FileDialog = _fileDialogMock.Object,
 					BitmapImageFileExporting = _bitmapFileExportingMock.Object
 				};
-				return readConvertedImage;
+				return convertedImageViewModel;
 			}
 
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsJPG()
 			{
-				ConvertedImageViewModel readConvertedImage = GetSutWithExtension(".jpg");
+				var convertedImageViewModel = GetSutWithExtension(".jpg");
 
-				readConvertedImage.ConvertCommand.Execute(null);
-				readConvertedImage.SaveAsCommand.Execute(null);
+				convertedImageViewModel.ConvertCommand.Execute(null);
+				convertedImageViewModel.SaveAsCommand.Execute(null);
 
 				_bitmapFileExportingMock.Verify(
 				m => m.ExportImageAsFile(It.IsAny<BitmapImage>(), ImageFileFormats.jpg, It.IsAny<string>()), Times.Once);
@@ -130,10 +130,10 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsPNG()
 			{
-				ConvertedImageViewModel readConvertedImage = GetSutWithExtension(".png");
+				var convertedImageViewModel = GetSutWithExtension(".png");
 
-				readConvertedImage.ConvertCommand.Execute(null);
-				readConvertedImage.SaveAsCommand.Execute(null);
+				convertedImageViewModel.ConvertCommand.Execute(null);
+				convertedImageViewModel.SaveAsCommand.Execute(null);
 
 				_bitmapFileExportingMock.Verify(
 				m => m.ExportImageAsFile(It.IsAny<BitmapImage>(), ImageFileFormats.png, It.IsAny<string>()), Times.Once);
@@ -142,10 +142,10 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecuted_ImageSavedAsBMP()
 			{
-				ConvertedImageViewModel readConvertedImage = GetSutWithExtension(".bmp");
+				var convertedImageViewModel = GetSutWithExtension(".bmp");
 
-				readConvertedImage.ConvertCommand.Execute(null);
-				readConvertedImage.SaveAsCommand.Execute(null);
+				convertedImageViewModel.ConvertCommand.Execute(null);
+				convertedImageViewModel.SaveAsCommand.Execute(null);
 
 				_bitmapFileExportingMock.Verify(
 				m => m.ExportImageAsFile(It.IsAny<BitmapImage>(), ImageFileFormats.bmp, It.IsAny<string>()), Times.Once);
@@ -155,15 +155,15 @@ namespace RGBtoGreyTests
 			public void SaveAs_SaveAsCommandExecutedWithoutOutputPathSet_DoNothing()
 			{
 				_fileDialogMock.Setup(m => m.FilePath).Returns<string>(null);
-				var readConvertedImage = new ConvertedImageViewModel
+				var convertedImageViewModel = new ConvertedImageViewModel
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
 					FileDialog = _fileDialogMock.Object,
 					BitmapImageFileExporting = _bitmapFileExportingMock.Object
 				};
 
-				readConvertedImage.ConvertCommand.Execute(null);
-				readConvertedImage.SaveAsCommand.Execute(null);
+				convertedImageViewModel.ConvertCommand.Execute(null);
+				convertedImageViewModel.SaveAsCommand.Execute(null);
 
 				_bitmapFileExportingMock.Verify(
 				m => m.ExportImageAsFile(It.IsAny<BitmapImage>(), It.IsAny<ImageFileFormats>(), It.IsAny<string>()), Times.Never);
@@ -172,11 +172,11 @@ namespace RGBtoGreyTests
 			[Test]
 			public void SaveAs_SaveAsCommandExecutedWithInvalidOutputPathSet_ExceptionThrown()
 			{
-				ConvertedImageViewModel readConvertedImage = GetSutWithExtension("");
+				var convertedImageViewModel = GetSutWithExtension("");
 
-				readConvertedImage.ConvertCommand.Execute(null);
+				convertedImageViewModel.ConvertCommand.Execute(null);
 
-				Assert.That(() => readConvertedImage.SaveAsCommand.Execute(null), Throws.Exception.TypeOf<FileFormatException>());
+				Assert.That(() => convertedImageViewModel.SaveAsCommand.Execute(null), Throws.Exception.TypeOf<FileFormatException>());
 			}
 		}
 	}
