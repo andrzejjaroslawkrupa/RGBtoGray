@@ -23,7 +23,7 @@ namespace ImgProcLib
 			if (bitmapImage == null)
 				throw new ArgumentNullException();
 
-			var stride = DetermineStride(bitmapImage);
+			var stride = CalculateStride(bitmapImage);
 			var pixels = new byte[bitmapImage.PixelHeight * stride];
 
 			bitmapImage.CopyPixels(pixels, stride, 0);
@@ -45,14 +45,14 @@ namespace ImgProcLib
 
 		private static BitmapSource CreateImage(BitmapSource bitmapImage, byte[] pixels)
 		{
-			var stride = DetermineStride(bitmapImage);
+			var stride = CalculateStride(bitmapImage);
 
 			var bitmapSource = BitmapSource.Create(bitmapImage.PixelWidth, bitmapImage.PixelHeight, bitmapImage.DpiX, bitmapImage.DpiY, bitmapImage.Format, bitmapImage.Palette, pixels, stride);
 
 			return bitmapSource;
 		}
 
-		private static int DetermineStride(BitmapSource bitmapImage) =>
+		private static int CalculateStride(BitmapSource bitmapImage) =>
 			bitmapImage.PixelWidth * (bitmapImage.Format.BitsPerPixel / 8);
 	}
 }
