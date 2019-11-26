@@ -12,8 +12,8 @@ namespace RGBtoGrey.ViewModel
 			if (bitmapSource is null || outputPath is null)
 				throw new ArgumentNullException();
 
-			if (string.IsNullOrEmpty(outputPath) || IsPathValid(outputPath))
-				throw new ArgumentException("Invalid output path");
+			if (!IsPathValid(outputPath))
+				return;
 
 			var encoder = AssignProperBitmapEncoderFromFileFormat(imageFormat);
 			encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
@@ -50,7 +50,11 @@ namespace RGBtoGrey.ViewModel
 			{
 				throw new ArgumentException("Invalid directory");
 			}
-			return !Directory.Exists(path);
+
+			if (string.IsNullOrEmpty(path))
+				throw new ArgumentException("Path is empty");
+
+			return Directory.Exists(path);
 		}
 	}
 }
