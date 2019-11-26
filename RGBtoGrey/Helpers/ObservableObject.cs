@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 
-namespace RGBtoGrey.ViewModel
+namespace RGBtoGrey.Helpers
 {
 	public abstract class ObservableObject : INotifyPropertyChanged
 	{

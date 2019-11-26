@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.Interfaces;
+using RGBtoGrey.Helpers;
 
 namespace RGBtoGrey.ViewModel
 {
