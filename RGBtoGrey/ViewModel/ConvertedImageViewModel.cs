@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.Interfaces;
 using RGBtoGrey.Helpers;
+using System.Threading.Tasks;
 
 namespace RGBtoGrey.ViewModel
 {
@@ -71,7 +72,15 @@ namespace RGBtoGrey.ViewModel
 			FileDialog.ShowDialog();
 			if (string.IsNullOrEmpty(FileDialog.FilePath))
 				return;
-			var ext = Path.GetExtension(FileDialog.FilePath);
+			string extension = ExtractExtensionFromPath(FileDialog.FilePath);
+
+			if (Enum.TryParse(extension, out ImageFileFormats imageFormat))
+				BitmapImageFileExporting.ExportImageAsFile(ConvertedImage, imageFormat, FileDialog.FilePath);
+		}
+
+		private string ExtractExtensionFromPath(string path)
+		{
+			var ext = Path.GetExtension(path);
 			try
 			{
 				ext = ext.Substring(1);
@@ -80,9 +89,8 @@ namespace RGBtoGrey.ViewModel
 			{
 				throw new FileFormatException();
 			}
-			
-			if (Enum.TryParse(ext, out ImageFileFormats imageFormat))
-				BitmapImageFileExporting.ExportImageAsFile(ConvertedImage, imageFormat, FileDialog.FilePath);
+
+			return ext;
 		}
 	}
 	public enum ImageFileFormats { jpg, jpeg, png, bmp }
