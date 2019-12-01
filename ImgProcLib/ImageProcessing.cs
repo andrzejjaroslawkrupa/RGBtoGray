@@ -18,15 +18,15 @@ namespace ImgProcLib
 			return CreateImage(bitmapSource, pixels);
 		}
 
-		public static byte[] GetBitmapPixels(BitmapSource bitmapImage)
+		public static byte[] GetBitmapPixels(BitmapSource bitmapSource)
 		{
-			if (bitmapImage == null)
+			if (bitmapSource == null)
 				throw new ArgumentNullException();
 
-			var stride = CalculateStride(bitmapImage);
-			var pixels = new byte[bitmapImage.PixelHeight * stride];
+			var stride = CalculateStride(bitmapSource);
+			var pixels = new byte[bitmapSource.PixelHeight * stride];
 
-			bitmapImage.CopyPixels(pixels, stride, 0);
+			bitmapSource.CopyPixels(pixels, stride, 0);
 
 			return pixels;
 		}
@@ -43,16 +43,16 @@ namespace ImgProcLib
 			return pixels;
 		}
 
-		private static BitmapSource CreateImage(BitmapSource bitmapImage, byte[] pixels)
+		private static BitmapSource CreateImage(BitmapSource inputBitmapSource, byte[] pixels)
 		{
-			var stride = CalculateStride(bitmapImage);
+			var stride = CalculateStride(inputBitmapSource);
 
-			var bitmapSource = BitmapSource.Create(bitmapImage.PixelWidth, bitmapImage.PixelHeight, bitmapImage.DpiX, bitmapImage.DpiY, bitmapImage.Format, bitmapImage.Palette, pixels, stride);
+			var outputBitmapSource = BitmapSource.Create(inputBitmapSource.PixelWidth, inputBitmapSource.PixelHeight, inputBitmapSource.DpiX, inputBitmapSource.DpiY, inputBitmapSource.Format, inputBitmapSource.Palette, pixels, stride);
 
-			return bitmapSource;
+			return outputBitmapSource;
 		}
 
-		private static int CalculateStride(BitmapSource bitmapImage) =>
-			bitmapImage.PixelWidth * (bitmapImage.Format.BitsPerPixel / 8);
+		private static int CalculateStride(BitmapSource bitmapSource) =>
+			bitmapSource.PixelWidth * (bitmapSource.Format.BitsPerPixel / 8);
 	}
 }
