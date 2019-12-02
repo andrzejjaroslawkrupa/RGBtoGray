@@ -3,6 +3,7 @@ using RGBtoGrey.ViewModel;
 using Moq;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using ImgProcLib;
 using RGBtoGrey.FileDialog;
@@ -44,15 +45,15 @@ namespace RGBtoGreyTests
 				_imageProcessingMock.Verify(m => m.ConvertImage(It.IsAny<string>()), Times.Once);
 			}
 
-
 			[Test]
 			public void ConvertImage_ConvertCommandExecuted_ConvertedImageSet()
 			{
-				var bitmapImage = new BitmapImage(new Uri(_testFilesDirectory));
+				var bitmapImage = new Task<BitmapSource>(() => new BitmapImage(new Uri(_testFilesDirectory)));
+				bitmapImage.RunSynchronously();
 				_imageProcessingMock.Setup(m => m.ConvertImage(It.IsAny<string>()))
 					.Returns(bitmapImage);
 				var readConvertedImage = GetSut();
-				var expected = ImageProcessing.GetBitmapPixels(bitmapImage);
+				var expected = ImageProcessing.GetBitmapPixels(bitmapImage.Result);
 
 				readConvertedImage.ConvertCommand.Execute(null);
 				var actual = ImageProcessing.GetBitmapPixels(readConvertedImage.ConvertedImage);
@@ -79,13 +80,14 @@ namespace RGBtoGreyTests
 			}
 
 			[Test]
-			public void ConvertImage_ConvertCommandExecuted_IsImageConvertedSetToTrue()
+			public void ConvertImage_ConvertCommandExecuted_IsImageNotConvertingSetToTrue()
 			{
 				var convertedImageViewModel = GetSut();
 
-				convertedImageViewModel.ConvertCommand.Execute(null);
+				var task = new Task(() => convertedImageViewModel.ConvertCommand.Execute(null));
+				task.RunSynchronously();
 
-				Assert.That(convertedImageViewModel.IsImageConverted, Is.True);
+				Assert.That(convertedImageViewModel.IsImageNotConverting, Is.True);
 			}
 		}
 

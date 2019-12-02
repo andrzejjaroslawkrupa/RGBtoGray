@@ -25,7 +25,7 @@
 				<ColumnDefinition Width="*"/>
 				<ColumnDefinition Width="*"/>
 			</Grid.ColumnDefinitions>
-			<Button Content="Convert"  Grid.Column="0" VerticalAlignment="Center" Width="75" Command="{Binding ConvertCommand}"/>
+			<Button Content="Convert"  Grid.Column="0" VerticalAlignment="Center" Width="75" Command="{Binding ConvertCommand}" IsEnabled="{Binding IsImageNotConverting}"/>
 			<Button Content="Save as..."  Grid.Column="1" VerticalAlignment="Center" Width="75" Command="{Binding SaveAsCommand}" IsEnabled="{Binding IsImageConverted}"/>
 		</Grid>
 		

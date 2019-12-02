@@ -48,7 +48,7 @@ namespace ImgProcLib
 			var stride = CalculateStride(inputBitmapSource);
 
 			var outputBitmapSource = BitmapSource.Create(inputBitmapSource.PixelWidth, inputBitmapSource.PixelHeight, inputBitmapSource.DpiX, inputBitmapSource.DpiY, inputBitmapSource.Format, inputBitmapSource.Palette, pixels, stride);
-
+			outputBitmapSource.Freeze(); //Allows to pass an image between threads
 			return outputBitmapSource;
 		}
 

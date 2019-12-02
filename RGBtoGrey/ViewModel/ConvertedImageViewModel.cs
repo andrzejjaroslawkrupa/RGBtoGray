@@ -13,7 +13,7 @@ namespace RGBtoGrey.ViewModel
 	{
 		private BitmapSource _convertedImage;
 		private string _conversionTime;
-		private bool _isImageConverted = false;
+		private bool _isImageNotConverting = true;
 
 		public BitmapSource ConvertedImage
 		{
@@ -35,36 +35,40 @@ namespace RGBtoGrey.ViewModel
 			}
 		}
 
-		public bool IsImageConverted
+		public bool IsImageNotConverting
 		{
-			get => _isImageConverted;
+			get => _isImageNotConverting;
 			private set
 			{
-				_isImageConverted = value;
+				_isImageNotConverting = value;
+				OnPropertyChanged(() => IsImageNotConverting);
 				OnPropertyChanged(() => IsImageConverted);
 			}
 		}
+
+		public bool IsImageConverted => ConvertedImage != null && IsImageNotConverting;
 
 		public IImageProcessingAdapter ImageProcessingAdapter { get; set; } = new ImageProcessingAdapter();
 
 		public IFileDialog FileDialog { get; set; } = new FileDialog.FileDialog(new Microsoft.Win32.SaveFileDialog());
 		public IBitmapImageFileExporting BitmapImageFileExporting { get; set; } = new BitmapImageFileExporting();
 
-		public ICommand ConvertCommand => new DelegateCommand(ConvertImage);
+		public ICommand ConvertCommand => new DelegateCommand(async ()=> await ConvertImage());
 		public ICommand SaveAsCommand => new DelegateCommand(ShowSaveFileDialog);
 
-		private void ConvertImage()
+		private async Task ConvertImage()
 		{
-			IsImageConverted = false;
+			IsImageNotConverting = false;
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			ConvertedImage = ImageProcessingAdapter.ConvertImage(Presenter.FilePath);
+			var outputImage = await ImageProcessingAdapter.ConvertImage(Presenter.FilePath);
+			ConvertedImage = outputImage;
 			watch.Stop();
 
 			var elapsedMs = watch.ElapsedMilliseconds;
 			ConversionTime = Convert.ToString(elapsedMs) + "ms";
 
-			IsImageConverted = true;
+			IsImageNotConverting = true;
 		}
 
 		private void ShowSaveFileDialog()
