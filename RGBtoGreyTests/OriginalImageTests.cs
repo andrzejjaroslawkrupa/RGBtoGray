@@ -56,5 +56,17 @@ namespace RGBtoGreyTests
 
 			Assert.That(() => _originalImageVM.OpenFileDialogCommand.Execute(null), Throws.Exception.TypeOf<ApplicationException>());
 		}
+
+		[Test]
+		public void NoPathChosen_MethodReturns()
+		{
+			_fileDialogMock.Setup(m => m.ShowDialog()).Returns(false);
+			_originalImageVM.FileDialog = _fileDialogMock.Object;
+			Presenter.FilePath = "test";
+
+			_originalImageVM.OpenFileDialogCommand.Execute(null);
+
+			Assert.That(Presenter.FilePath, Is.EqualTo("test"));
+		}
 	}
 }

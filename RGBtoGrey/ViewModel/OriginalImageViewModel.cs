@@ -37,13 +37,9 @@ namespace RGBtoGrey.ViewModel
 
 		private void ShowOpenFileDialog()
 		{
-			if (FileDialog.ShowDialog() == true && ChangeImageFromPath(FileDialog.FilePath) == true)
-			{
-				ChangeFilenameFromPath(FileDialog.FilePath);
-				Presenter.FilePath = FileDialog.FilePath;
-			}
-			else
-				Presenter.FilePath = null;
+			if (FileDialog.ShowDialog() != true || ChangeImageFromPath(FileDialog.FilePath) != true) return;
+			ChangeFilenameFromPath(FileDialog.FilePath);
+			Presenter.FilePath = FileDialog.FilePath;
 		}
 
 		private void ChangeFilenameFromPath(string path)
