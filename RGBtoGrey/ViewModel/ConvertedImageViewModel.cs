@@ -6,6 +6,7 @@ using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.Interfaces;
 using RGBtoGrey.Helpers;
 using System.Threading.Tasks;
+using Prism.Commands;
 
 namespace RGBtoGrey.ViewModel
 {

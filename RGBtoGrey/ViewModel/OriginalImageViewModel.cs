@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Prism.Commands;
 using RGBtoGrey.FileDialog;
 using RGBtoGrey.Helpers;
 
