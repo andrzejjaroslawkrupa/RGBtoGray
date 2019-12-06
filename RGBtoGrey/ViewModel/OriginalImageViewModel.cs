@@ -2,12 +2,12 @@
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using Prism.Commands;
+using Prism.Mvvm;
 using RGBtoGrey.FileDialog;
-using RGBtoGrey.Helpers;
 
 namespace RGBtoGrey.ViewModel
 {
-	public class OriginalImageViewModel : ObservableObject
+	public class OriginalImageViewModel : BindableBase
 	{
 		private string _filename;
 		private BitmapImage _originalImage;
@@ -18,7 +18,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_filename = value;
-				OnPropertyChanged(() => Filename);
+				RaisePropertyChanged(nameof(Filename));
 			}
 		}
 
@@ -28,7 +28,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_originalImage = value;
-				OnPropertyChanged(() => OriginalImage);
+				RaisePropertyChanged(nameof(OriginalImage));
 			}
 		}
 

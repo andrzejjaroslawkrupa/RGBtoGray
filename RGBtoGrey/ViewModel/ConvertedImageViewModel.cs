@@ -4,13 +4,13 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.Interfaces;
-using RGBtoGrey.Helpers;
 using System.Threading.Tasks;
 using Prism.Commands;
+using Prism.Mvvm;
 
 namespace RGBtoGrey.ViewModel
 {
-	public class ConvertedImageViewModel : ObservableObject
+	public class ConvertedImageViewModel : BindableBase
 	{
 		private BitmapSource _convertedImage;
 		private string _conversionTime;
@@ -22,7 +22,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_convertedImage = value;
-				OnPropertyChanged(() => ConvertedImage);
+				RaisePropertyChanged(nameof(ConvertedImage));
 			}
 		}
 
@@ -32,7 +32,7 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_conversionTime = value;
-				OnPropertyChanged(() => ConversionTime);
+				RaisePropertyChanged(nameof(ConversionTime));
 			}
 		}
 
@@ -42,8 +42,8 @@ namespace RGBtoGrey.ViewModel
 			private set
 			{
 				_isImageNotConverting = value;
-				OnPropertyChanged(() => IsImageNotConverting);
-				OnPropertyChanged(() => IsImageConverted);
+				RaisePropertyChanged(nameof(IsImageNotConverting));
+				RaisePropertyChanged(nameof(IsImageConverted));
 			}
 		}
 

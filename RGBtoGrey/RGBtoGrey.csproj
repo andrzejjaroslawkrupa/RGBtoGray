@@ -95,7 +95,6 @@
     <Compile Include="ViewModel\Presenter.cs" />
     <Compile Include="ViewModel\ConvertedImageViewModel.cs" />
     <Compile Include="ViewModel\OriginalImageViewModel.cs" />
-    <Compile Include="Helpers\ObservableObject.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
