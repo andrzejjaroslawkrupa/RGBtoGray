@@ -7,7 +7,6 @@ namespace RGBtoGrey.View
 		public OriginalImageView()
 		{
 			InitializeComponent();
-			DataContext = new OriginalImageViewModel();
 		}
 	}
 }
