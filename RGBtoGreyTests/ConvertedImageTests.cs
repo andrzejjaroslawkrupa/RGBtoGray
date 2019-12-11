@@ -8,28 +8,41 @@ using System.Windows.Media.Imaging;
 using ImgProcLib;
 using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.Interfaces;
+using Microsoft.Reactive.Testing;
+using System.Reactive;
 
 namespace RGBtoGreyTests
 {
 	public class ConvertedImageTests
 	{
 		private Mock<IImageProcessingAdapter> _imageProcessingMock;
+		private Mock<IFileLocation> _fileLocationMock;
+
+		private void SetUpFileLocationObservableMock(string outputPath)
+		{
+			var testScheduler = new TestScheduler();
+			var notification = Notification.CreateOnNext(outputPath);
+			var observable = testScheduler.CreateColdObservable(new Recorded<Notification<string>>(0, notification));
+			_fileLocationMock.Setup(m => m.GetFileLocationsObservable).Returns(observable);
+		}
 
 		[TestFixture]
 		public class ConvertImageTests : ConvertedImageTests
 		{
 			private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
-			
+
 			[SetUp]
 			public void Setup()
 			{
 				_imageProcessingMock = new Mock<IImageProcessingAdapter>();
-				Presenter.FilePath = _testFilesDirectory;
+				_fileLocationMock = new Mock<IFileLocation>();
+
+				SetUpFileLocationObservableMock(_testFilesDirectory);
 			}
 
 			private ConvertedImageViewModel GetSut()
 			{
-				return new ConvertedImageViewModel
+				return new ConvertedImageViewModel(_fileLocationMock.Object)
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object
 				};
@@ -103,14 +116,16 @@ namespace RGBtoGreyTests
 			{
 				_imageProcessingMock = new Mock<IImageProcessingAdapter>();
 				_fileDialogMock = new Mock<IFileDialog>();
+				_fileLocationMock = new Mock<IFileLocation>();
 				_bitmapFileExportingMock = new Mock<IBitmapImageFileExporting>();
 			}
 
 			private ConvertedImageViewModel GetSutWithExtension(string extension)
 			{
 				_fileDialogMock.Setup(m => m.FilePath).Returns(_outputFileWithoutExt + extension);
-				Presenter.FilePath = _outputFileWithoutExt + extension;
-				var convertedImageViewModel = new ConvertedImageViewModel
+				SetUpFileLocationObservableMock(_outputFileWithoutExt + extension);
+
+				var convertedImageViewModel = new ConvertedImageViewModel(_fileLocationMock.Object)
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
 					FileDialog = _fileDialogMock.Object,
@@ -159,7 +174,8 @@ namespace RGBtoGreyTests
 			public void SaveAs_SaveAsCommandExecutedWithoutOutputPathSet_DoNothing()
 			{
 				_fileDialogMock.Setup(m => m.FilePath).Returns<string>(null);
-				var convertedImageViewModel = new ConvertedImageViewModel
+				SetUpFileLocationObservableMock(null);
+				var convertedImageViewModel = new ConvertedImageViewModel(_fileLocationMock.Object)
 				{
 					ImageProcessingAdapter = _imageProcessingMock.Object,
 					FileDialog = _fileDialogMock.Object,

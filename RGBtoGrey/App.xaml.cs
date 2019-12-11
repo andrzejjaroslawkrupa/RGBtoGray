@@ -4,6 +4,7 @@ using Prism.Mvvm;
 using Prism.Unity;
 using RGBtoGrey.View;
 using RGBtoGrey.ViewModel;
+using RGBtoGrey.ViewModel.Interfaces;
 
 namespace RGBtoGrey
 {
@@ -21,7 +22,7 @@ namespace RGBtoGrey
 
 		protected override void RegisterTypes(IContainerRegistry containerRegistry)
 		{
-			
+			containerRegistry.RegisterSingleton<IFileLocation, FileLocation>();
 		}
 	}
 }

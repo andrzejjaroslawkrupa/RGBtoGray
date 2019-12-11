@@ -4,6 +4,7 @@ using System.Windows.Media.Imaging;
 using Prism.Commands;
 using Prism.Mvvm;
 using RGBtoGrey.FileDialog;
+using RGBtoGrey.ViewModel.Interfaces;
 
 namespace RGBtoGrey.ViewModel
 {
@@ -11,6 +12,12 @@ namespace RGBtoGrey.ViewModel
 	{
 		private string _filename;
 		private BitmapImage _originalImage;
+		private IFileLocation _fileLocation;
+
+		public OriginalImageViewModel(IFileLocation fileLocation)
+		{
+			_fileLocation = fileLocation;
+		}
 
 		public string Filename
 		{
@@ -40,7 +47,7 @@ namespace RGBtoGrey.ViewModel
 		{
 			if (FileDialog.ShowDialog() != true || ChangeImageFromPath(FileDialog.FilePath) != true) return;
 			ChangeFilenameFromPath(FileDialog.FilePath);
-			Presenter.FilePath = FileDialog.FilePath;
+			_fileLocation.SetNewLocation(FileDialog.FilePath);
 		}
 
 		private void ChangeFilenameFromPath(string path)

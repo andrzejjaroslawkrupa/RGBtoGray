@@ -5,6 +5,7 @@ using RGBtoGrey.FileDialog;
 using System;
 using System.Windows.Media.Imaging;
 using ImgProcLib;
+using RGBtoGrey.ViewModel.Interfaces;
 
 namespace RGBtoGreyTests
 {
@@ -13,12 +14,14 @@ namespace RGBtoGreyTests
 	{
 		private OriginalImageViewModel _originalImageViewModel;
 		private Mock<IFileDialog> _fileDialogMock;
+		private Mock<IFileLocation> _fileLocationMock;
 		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 
 		[SetUp]
 		public void Setup()
 		{
-			_originalImageViewModel = new OriginalImageViewModel();
+			_fileLocationMock = new Mock<IFileLocation>();
+			_originalImageViewModel = new OriginalImageViewModel(_fileLocationMock.Object);
 			_fileDialogMock = new Mock<IFileDialog>();
 			_fileDialogMock.Setup(m => m.ShowDialog()).Returns(true);
 		}
@@ -62,11 +65,10 @@ namespace RGBtoGreyTests
 		{
 			_fileDialogMock.Setup(m => m.ShowDialog()).Returns(false);
 			_originalImageViewModel.FileDialog = _fileDialogMock.Object;
-			Presenter.FilePath = "test";
 
 			_originalImageViewModel.OpenFileDialogCommand.Execute(null);
 
-			Assert.That(Presenter.FilePath, Is.EqualTo("test"));
+			_fileLocationMock.Verify(m => m.SetNewLocation(It.IsAny<string>()), Times.Never);
 		}
 	}
 }

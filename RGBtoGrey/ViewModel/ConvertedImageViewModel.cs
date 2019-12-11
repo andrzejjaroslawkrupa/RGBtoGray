@@ -15,6 +15,17 @@ namespace RGBtoGrey.ViewModel
 		private BitmapSource _convertedImage;
 		private string _conversionTime;
 		private bool _isImageNotConverting = true;
+		private string _fileLocation;
+
+		public ConvertedImageViewModel(IFileLocation fileLocation)
+		{
+			fileLocation.GetFileLocationsObservable.Subscribe(f => OnFileLocationChanged(f));
+		}
+
+		private void OnFileLocationChanged(string fileLocation)
+		{
+			_fileLocation = fileLocation;
+		}
 
 		public BitmapSource ConvertedImage
 		{
@@ -62,7 +73,7 @@ namespace RGBtoGrey.ViewModel
 			IsImageNotConverting = false;
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
-			var outputImage = await ImageProcessingAdapter.ConvertImage(Presenter.FilePath);
+			var outputImage = await ImageProcessingAdapter.ConvertImage(_fileLocation);
 			ConvertedImage = outputImage;
 			watch.Stop();
 
