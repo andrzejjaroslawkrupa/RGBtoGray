@@ -8,8 +8,7 @@ using System.Windows.Media.Imaging;
 using ImgProcLib;
 using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.Interfaces;
-using Microsoft.Reactive.Testing;
-using System.Reactive;
+using System.Reactive.Subjects;
 
 namespace RGBtoGreyTests
 {
@@ -20,10 +19,9 @@ namespace RGBtoGreyTests
 
 		private void SetUpFileLocationObservableMock(string outputPath)
 		{
-			var testScheduler = new TestScheduler();
-			var notification = Notification.CreateOnNext(outputPath);
-			var observable = testScheduler.CreateColdObservable(new Recorded<Notification<string>>(0, notification));
-			_fileLocationMock.Setup(m => m.GetFileLocationsObservable).Returns(observable);
+			var fileLocationSubject = new Subject<string>();
+			fileLocationSubject.OnNext(outputPath);
+			_fileLocationMock.Setup(m => m.GetFileLocationsObservable).Returns(fileLocationSubject);
 		}
 
 		[TestFixture]
