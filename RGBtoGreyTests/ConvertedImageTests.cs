@@ -19,8 +19,8 @@ namespace RGBtoGreyTests
 
 		private void SetUpFileLocationObservableMock(string outputPath)
 		{
-			var fileLocationSubject = Observable.Return(outputPath);
-			_fileLocationMock.Setup(m => m.GetFileLocationsObservable).Returns(fileLocationSubject);
+			var singleValueObservable = Observable.Return(outputPath);
+			_fileLocationMock.Setup(m => m.GetFileLocationsObservable).Returns(singleValueObservable);
 		}
 
 		[TestFixture]
