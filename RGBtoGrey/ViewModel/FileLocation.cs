@@ -5,7 +5,7 @@ using System.Reactive.Subjects;
 
 namespace RGBtoGrey.ViewModel
 {
-	class FileLocation : IFileLocation
+	public class FileLocation : IFileLocation
 	{
 		private readonly Subject<string> _pathSubject;
 
