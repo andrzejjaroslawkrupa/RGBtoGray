@@ -19,7 +19,7 @@ namespace RGBtoGrey.ViewModel
 
 		public ConvertedImageViewModel(IFileLocation fileLocation)
 		{
-			fileLocation.GetFileLocationsObservable.Subscribe(OnFileLocationChanged);
+			fileLocation.GetFileLocationsObservable.Subscribe(f => OnFileLocationChanged(f));
 		}
 
 		private void OnFileLocationChanged(string fileLocation)
@@ -109,4 +109,5 @@ namespace RGBtoGrey.ViewModel
 			return ext;
 		}
 	}
+	public enum ImageFileFormats { jpg, jpeg, png, bmp }
 }
