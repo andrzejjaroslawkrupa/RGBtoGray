@@ -9,6 +9,7 @@ using ImgProcLib;
 using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.Interfaces;
 using System.Reactive.Linq;
+using RGBtoGrey.ViewModel.FileManagement;
 
 namespace RGBtoGreyTests
 {

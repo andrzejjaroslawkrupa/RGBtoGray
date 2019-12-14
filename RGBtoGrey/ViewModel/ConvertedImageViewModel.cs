@@ -7,6 +7,7 @@ using RGBtoGrey.ViewModel.Interfaces;
 using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Mvvm;
+using RGBtoGrey.ViewModel.FileManagement;
 
 namespace RGBtoGrey.ViewModel
 {

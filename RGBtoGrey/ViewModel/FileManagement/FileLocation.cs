@@ -1,9 +1,9 @@
-﻿using RGBtoGrey.ViewModel.Interfaces;
-using System;
+﻿using System;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using RGBtoGrey.ViewModel.Interfaces;
 
-namespace RGBtoGrey.ViewModel
+namespace RGBtoGrey.ViewModel.FileManagement
 {
 	public class FileLocation : IFileLocation
 	{

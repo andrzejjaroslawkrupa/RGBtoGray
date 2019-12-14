@@ -92,12 +92,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\EImageFileFormats.cs" />
-    <Compile Include="ViewModel\FileLocation.cs" />
+    <Compile Include="ViewModel\FileManagement\EImageFileFormats.cs" />
+    <Compile Include="ViewModel\FileManagement\FileLocation.cs" />
     <Compile Include="ViewModel\Interfaces\IFileLocation.cs" />
     <Compile Include="ViewModel\Interfaces\IBitmapImageFileExporting.cs" />
     <Compile Include="ViewModel\Interfaces\IImageProcessingAdapter.cs" />
-    <Compile Include="ViewModel\BitmapImageFileExporting.cs" />
+    <Compile Include="ViewModel\FileManagement\BitmapImageFileExporting.cs" />
     <Compile Include="ViewModel\ImageProcessingAdapter.cs" />
     <Compile Include="View\ConvertedImageView.xaml.cs">
       <DependentUpon>ConvertedImageView.xaml</DependentUpon>

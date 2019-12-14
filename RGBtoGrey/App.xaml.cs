@@ -4,6 +4,7 @@ using Prism.Mvvm;
 using Prism.Unity;
 using RGBtoGrey.View;
 using RGBtoGrey.ViewModel;
+using RGBtoGrey.ViewModel.FileManagement;
 using RGBtoGrey.ViewModel.Interfaces;
 
 namespace RGBtoGrey

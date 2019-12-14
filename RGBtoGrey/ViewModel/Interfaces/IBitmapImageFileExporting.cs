@@ -1,4 +1,5 @@
 ﻿using System.Windows.Media.Imaging;
+using RGBtoGrey.ViewModel.FileManagement;
 
 namespace RGBtoGrey.ViewModel.Interfaces
 {
