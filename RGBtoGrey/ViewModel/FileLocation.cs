@@ -18,10 +18,7 @@ namespace RGBtoGrey.ViewModel
 
 		public void SetNewLocation(string path)
 		{
-			if (path == null)
-				_pathSubject.OnNext("");
-			else
-				_pathSubject.OnNext(path);
+			_pathSubject.OnNext(path ?? "");
 		}
 	}
 }
