@@ -109,4 +109,5 @@ namespace RGBtoGrey.ViewModel
 			return ext;
 		}
 	}
+	public enum ImageFileFormats { jpg, jpeg, png, bmp }
 }
