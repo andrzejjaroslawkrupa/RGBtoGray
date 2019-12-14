@@ -12,7 +12,7 @@ namespace RGBtoGrey.ViewModel
 	{
 		private string _filename;
 		private BitmapImage _originalImage;
-		private IFileLocation _fileLocation;
+		private readonly IFileLocation _fileLocation;
 
 		public OriginalImageViewModel(IFileLocation fileLocation)
 		{
