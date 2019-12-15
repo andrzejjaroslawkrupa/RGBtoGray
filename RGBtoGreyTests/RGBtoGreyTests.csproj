@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="BitmapImageFileExportingTests.cs" />
     <Compile Include="ConvertedImageTests.cs" />
+    <Compile Include="FileLocationTests.cs" />
     <Compile Include="OriginalImageTests.cs" />
   </ItemGroup>
   <ItemGroup>
