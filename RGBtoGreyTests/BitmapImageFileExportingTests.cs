@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows.Media.Imaging;
 using NUnit.Framework;
-using RGBtoGrey.ViewModel;
 using RGBtoGrey.ViewModel.FileManagement;
 
 namespace RGBtoGreyTests
