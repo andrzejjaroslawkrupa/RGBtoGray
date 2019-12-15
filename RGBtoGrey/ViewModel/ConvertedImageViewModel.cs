@@ -71,6 +71,9 @@ namespace RGBtoGrey.ViewModel
 
 		private async Task ConvertImage()
 		{
+			if(string.IsNullOrEmpty(_fileLocation))
+				return;
+
 			IsImageNotConverting = false;
 
 			var watch = System.Diagnostics.Stopwatch.StartNew();
@@ -89,7 +92,7 @@ namespace RGBtoGrey.ViewModel
 			FileDialog.ShowDialog();
 			if (string.IsNullOrEmpty(FileDialog.FilePath))
 				return;
-			string extension = ExtractExtensionFromPath(FileDialog.FilePath);
+			var extension = ExtractExtensionFromPath(FileDialog.FilePath);
 
 			if (Enum.TryParse(extension, out ImageFileFormats imageFormat))
 				BitmapImageFileExporting.ExportImageAsFile(ConvertedImage, imageFormat, FileDialog.FilePath);

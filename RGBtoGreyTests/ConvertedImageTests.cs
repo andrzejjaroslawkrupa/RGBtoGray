@@ -18,9 +18,9 @@ namespace RGBtoGreyTests
 		private Mock<IImageProcessingAdapter> _imageProcessingMock;
 		private Mock<IFileLocation> _fileLocationMock;
 
-		private void SetUpFileLocationObservableMock(string outputPath)
+		private void SetUpFileLocationObservableMock(string filePath)
 		{
-			var singleValueObservable = Observable.Return(outputPath);
+			var singleValueObservable = Observable.Return(filePath);
 			_fileLocationMock.Setup(m => m.GetFileLocationsObservable).Returns(singleValueObservable);
 		}
 
@@ -70,6 +70,16 @@ namespace RGBtoGreyTests
 				var actual = ImageProcessing.GetBitmapPixels(readConvertedImage.ConvertedImage);
 
 				Assert.That(actual, Is.EqualTo(expected));
+			}
+
+			[Test]
+			public void ConvertImage_ConvertCommandExecutedWithNullImage_MethodReturns()
+			{
+				SetUpFileLocationObservableMock(null);
+				var convertedImageViewModel = GetSut();
+
+				var task = new Task(() => convertedImageViewModel.ConvertCommand.Execute(null));
+				task.RunSynchronously();
 			}
 
 			[Test]
