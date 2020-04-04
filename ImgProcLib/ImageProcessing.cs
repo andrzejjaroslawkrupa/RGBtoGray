@@ -35,7 +35,7 @@ namespace ImgProcLib
 		{
 			for (var i = 0; i < pixels.Length; i += 4)
 			{
-				pixels[i] = (byte)(R * pixels[i] + G * pixels[i + 1] + B * pixels[i + 2]);
+				pixels[i] = (byte) (R * pixels[i] + G * pixels[i + 1] + B * pixels[i + 2]);
 				pixels[i + 1] = pixels[i];
 				pixels[i + 2] = pixels[i];
 			}
@@ -47,12 +47,16 @@ namespace ImgProcLib
 		{
 			var stride = CalculateStride(inputBitmapSource);
 
-			var outputBitmapSource = BitmapSource.Create(inputBitmapSource.PixelWidth, inputBitmapSource.PixelHeight, inputBitmapSource.DpiX, inputBitmapSource.DpiY, inputBitmapSource.Format, inputBitmapSource.Palette, pixels, stride);
+			var outputBitmapSource = BitmapSource.Create(inputBitmapSource.PixelWidth, inputBitmapSource.PixelHeight,
+				inputBitmapSource.DpiX, inputBitmapSource.DpiY, inputBitmapSource.Format, inputBitmapSource.Palette,
+				pixels, stride);
 			outputBitmapSource.Freeze(); //Allows to pass an image between threads
 			return outputBitmapSource;
 		}
 
-		private static int CalculateStride(BitmapSource bitmapSource) =>
-			bitmapSource.PixelWidth * (bitmapSource.Format.BitsPerPixel / 8);
+		private static int CalculateStride(BitmapSource bitmapSource)
+		{
+			return bitmapSource.PixelWidth * (bitmapSource.Format.BitsPerPixel / 8);
+		}
 	}
 }

@@ -5,17 +5,22 @@ using Prism.Commands;
 using Prism.Mvvm;
 using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.Interfaces;
+using Unity;
 
 namespace RGBtoGrey.ViewModel
 {
 	public class OriginalImageViewModel : BindableBase
 	{
+		private readonly IFileDialog _fileDialog;
+		private readonly IFileLocation _fileLocation;
 		private string _filename;
 		private BitmapImage _originalImage;
-		private readonly IFileLocation _fileLocation;
 
-		public OriginalImageViewModel(IFileLocation fileLocation)
+
+		public OriginalImageViewModel([Dependency("OriginalImageFileDialog")]
+			IFileDialog fileDialog, IFileLocation fileLocation)
 		{
+			_fileDialog = fileDialog;
 			_fileLocation = fileLocation;
 		}
 
@@ -39,15 +44,13 @@ namespace RGBtoGrey.ViewModel
 			}
 		}
 
-		public IFileDialog FileDialog { get; set; } = new FileDialog.FileDialog(new Microsoft.Win32.OpenFileDialog());
-
 		public ICommand OpenFileDialogCommand => new DelegateCommand(ShowOpenFileDialog);
 
 		private void ShowOpenFileDialog()
 		{
-			if (FileDialog.ShowDialog() != true || ChangeImageFromPath(FileDialog.FilePath) != true) return;
-			ChangeFilenameFromPath(FileDialog.FilePath);
-			_fileLocation.SetNewLocation(FileDialog.FilePath);
+			if (_fileDialog.ShowDialog() != true || ChangeImageFromPath(_fileDialog.FilePath) != true) return;
+			ChangeFilenameFromPath(_fileDialog.FilePath);
+			_fileLocation.SetNewLocation(_fileDialog.FilePath);
 		}
 
 		private void ChangeFilenameFromPath(string path)

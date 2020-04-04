@@ -1,6 +1,4 @@
-﻿using RGBtoGrey.ViewModel;
-
-namespace RGBtoGrey.View
+﻿namespace RGBtoGrey.View
 {
 	public partial class OriginalImageView
 	{

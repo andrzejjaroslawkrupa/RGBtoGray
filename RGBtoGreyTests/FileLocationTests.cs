@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
+using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel;
 using RGBtoGrey.ViewModel.FileManagement;
 using RGBtoGrey.ViewModel.Interfaces;
@@ -9,21 +11,21 @@ namespace RGBtoGreyTests
 	public class FileLocationTests
 	{
 		private IFileLocation _fileLocation;
+		private Mock<IFileDialog> _fileDialogMock;
+		private Mock<IBitmapImageFileExporting> _bitmapImageFileExporting;
+		private Mock<IImageProcessingAdapter> _imageProcessingAdapter;
 		private ConvertedImageViewModel _convertedImageViewModel;
 
 		[SetUp]
-		public  void SetUp()
+		public void SetUp()
 		{
 			_fileLocation = new FileLocation();
-			_convertedImageViewModel = new ConvertedImageViewModel(_fileLocation);
-		}
+			_fileDialogMock = new Mock<IFileDialog>();
+			_bitmapImageFileExporting = new Mock<IBitmapImageFileExporting>();
+			_imageProcessingAdapter = new Mock<IImageProcessingAdapter>();
 
-		[Test]
-		public void SetNewLocation_NewLocation_ObservableSendsLocationToSubscribers()
-		{
-			_fileLocation.SetNewLocation("path");
-
-			Assert.That(_convertedImageViewModel.FileLocation, Is.EqualTo("path"));
+			_convertedImageViewModel = new ConvertedImageViewModel(_fileDialogMock.Object,
+				_bitmapImageFileExporting.Object, _imageProcessingAdapter.Object, _fileLocation);
 		}
 
 		[Test]
@@ -33,6 +35,14 @@ namespace RGBtoGreyTests
 			_fileLocation.SetNewLocation("path2");
 
 			Assert.That(_convertedImageViewModel.FileLocation, Is.EqualTo("path2"));
+		}
+
+		[Test]
+		public void SetNewLocation_NewLocation_ObservableSendsLocationToSubscribers()
+		{
+			_fileLocation.SetNewLocation("path");
+
+			Assert.That(_convertedImageViewModel.FileLocation, Is.EqualTo("path"));
 		}
 
 		[Test]

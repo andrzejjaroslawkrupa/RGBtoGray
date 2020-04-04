@@ -13,7 +13,7 @@ namespace RGBtoGrey.ViewModel
 			var uri = new Uri(path);
 			var originalImage = new BitmapImage(uri);
 			originalImage.Freeze();
-				
+
 			return await Task.Run(() => ImageProcessing.ConvertBitmapImageToGreyscale(originalImage));
 		}
 	}

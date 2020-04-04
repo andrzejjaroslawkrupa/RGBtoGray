@@ -1,30 +1,41 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using RGBtoGrey.FileDialog;
-using RGBtoGrey.ViewModel.Interfaces;
-using System.Threading.Tasks;
 using Prism.Commands;
 using Prism.Mvvm;
+using RGBtoGrey.FileDialog;
 using RGBtoGrey.ViewModel.FileManagement;
+using RGBtoGrey.ViewModel.Interfaces;
+using Unity;
 
 namespace RGBtoGrey.ViewModel
 {
 	public class ConvertedImageViewModel : BindableBase
 	{
-		private BitmapSource _convertedImage;
+		private readonly IBitmapImageFileExporting _bitmapImageFileExporting;
+		private readonly IFileDialog _fileDialog;
+		private readonly IImageProcessingAdapter _imageProcessingAdapter;
 		private string _conversionTime;
+
+		private BitmapSource _convertedImage;
 		private bool _isImageNotConverting = true;
 
-		public ConvertedImageViewModel(IFileLocation fileLocation)
+		public ConvertedImageViewModel(
+			[Dependency("ConvertedImageFileDialog")]
+			IFileDialog fileDialog,
+			IBitmapImageFileExporting bitmapImageFileExporting,
+			IImageProcessingAdapter imageProcessingAdapter,
+			IFileLocation fileLocation
+		)
 		{
-			fileLocation.GetFileLocationsObservable.Subscribe(OnFileLocationChanged);
-		}
+			_fileDialog = fileDialog;
+			_bitmapImageFileExporting = bitmapImageFileExporting;
+			_imageProcessingAdapter = imageProcessingAdapter;
 
-		private void OnFileLocationChanged(string fileLocation)
-		{
-			FileLocation = fileLocation;
+			fileLocation.GetFileLocationsObservable.Subscribe(OnFileLocationChanged);
 		}
 
 		public string FileLocation { get; private set; }
@@ -62,23 +73,23 @@ namespace RGBtoGrey.ViewModel
 
 		public bool IsImageConverted => ConvertedImage != null && IsImageNotConverting;
 
-		public IImageProcessingAdapter ImageProcessingAdapter { get; set; } = new ImageProcessingAdapter();
-
-		public IFileDialog FileDialog { get; set; } = new FileDialog.FileDialog(new Microsoft.Win32.SaveFileDialog());
-		public IBitmapImageFileExporting BitmapImageFileExporting { get; set; } = new BitmapImageFileExporting();
-
-		public ICommand ConvertCommand => new DelegateCommand(async ()=> await ConvertImage());
+		public ICommand ConvertCommand => new DelegateCommand(async () => await ConvertImage());
 		public ICommand SaveAsCommand => new DelegateCommand(ShowSaveFileDialog);
+
+		private void OnFileLocationChanged(string fileLocation)
+		{
+			FileLocation = fileLocation;
+		}
 
 		private async Task ConvertImage()
 		{
-			if(string.IsNullOrEmpty(FileLocation))
+			if (string.IsNullOrEmpty(FileLocation))
 				return;
 
 			IsImageNotConverting = false;
 
-			var watch = System.Diagnostics.Stopwatch.StartNew();
-			var outputImage = await ImageProcessingAdapter.ConvertImage(FileLocation);
+			var watch = Stopwatch.StartNew();
+			var outputImage = await _imageProcessingAdapter.ConvertImage(FileLocation);
 			ConvertedImage = outputImage;
 			watch.Stop();
 
@@ -90,13 +101,13 @@ namespace RGBtoGrey.ViewModel
 
 		private void ShowSaveFileDialog()
 		{
-			FileDialog.ShowDialog();
-			if (string.IsNullOrEmpty(FileDialog.FilePath))
+			_fileDialog.ShowDialog();
+			if (string.IsNullOrEmpty(_fileDialog.FilePath))
 				return;
-			var extension = ExtractExtensionFromPath(FileDialog.FilePath);
+			var extension = ExtractExtensionFromPath(_fileDialog.FilePath);
 
 			if (Enum.TryParse(extension, out ImageFileFormats imageFormat))
-				BitmapImageFileExporting.ExportImageAsFile(ConvertedImage, imageFormat, FileDialog.FilePath);
+				_bitmapImageFileExporting.ExportImageAsFile(ConvertedImage, imageFormat, _fileDialog.FilePath);
 		}
 
 		private string ExtractExtensionFromPath(string path)

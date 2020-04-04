@@ -1,10 +1,10 @@
-﻿using NUnit.Framework;
-using RGBtoGrey.ViewModel;
-using Moq;
-using RGBtoGrey.FileDialog;
-using System;
+﻿using System;
 using System.Windows.Media.Imaging;
 using ImgProcLib;
+using Moq;
+using NUnit.Framework;
+using RGBtoGrey.FileDialog;
+using RGBtoGrey.ViewModel;
 using RGBtoGrey.ViewModel.Interfaces;
 
 namespace RGBtoGreyTests
@@ -13,24 +13,29 @@ namespace RGBtoGreyTests
 	public class OriginalImageTests
 	{
 		private OriginalImageViewModel _originalImageViewModel;
-		private Mock<IFileDialog> _fileDialogMock;
 		private Mock<IFileLocation> _fileLocationMock;
-		private readonly string _testFilesDirectory = TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
+
+		private readonly string _testFilesDirectory =
+			TestContext.CurrentContext.TestDirectory + @"\\TestFiles\\testImage.jpg";
 
 		[SetUp]
 		public void Setup()
 		{
 			_fileLocationMock = new Mock<IFileLocation>();
-			_originalImageViewModel = new OriginalImageViewModel(_fileLocationMock.Object);
-			_fileDialogMock = new Mock<IFileDialog>();
-			_fileDialogMock.Setup(m => m.ShowDialog()).Returns(true);
+		}
+
+		private void SetSut(IMock<IFileDialog> fileDialogMock)
+		{
+			_originalImageViewModel = new OriginalImageViewModel(fileDialogMock.Object, _fileLocationMock.Object);
 		}
 
 		[Test]
 		public void NewImageLoaded_FilenameChangedCorrectly()
 		{
-			_fileDialogMock.Setup(m => m.FilePath).Returns(_testFilesDirectory);
-			_originalImageViewModel.FileDialog = _fileDialogMock.Object;
+			var fileDialogMock = new Mock<IFileDialog>();
+			fileDialogMock.Setup(m => m.ShowDialog()).Returns(true);
+			fileDialogMock.Setup(m => m.FilePath).Returns(_testFilesDirectory);
+			SetSut(fileDialogMock);
 
 			_originalImageViewModel.OpenFileDialogCommand.Execute(null);
 
@@ -41,8 +46,10 @@ namespace RGBtoGreyTests
 		public void NewImageLoaded_ImageSetCorrectly()
 		{
 			var testImagePath = _testFilesDirectory;
-			_fileDialogMock.Setup(m => m.FilePath).Returns(testImagePath);
-			_originalImageViewModel.FileDialog = _fileDialogMock.Object;
+			var fileDialogMock = new Mock<IFileDialog>();
+			fileDialogMock.Setup(m => m.ShowDialog()).Returns(true);
+			fileDialogMock.Setup(m => m.FilePath).Returns(testImagePath);
+			SetSut(fileDialogMock);
 			var expected = ImageProcessing.GetBitmapPixels(new BitmapImage(new Uri(testImagePath)));
 
 			_originalImageViewModel.OpenFileDialogCommand.Execute(null);
@@ -52,23 +59,27 @@ namespace RGBtoGreyTests
 		}
 
 		[Test]
-		public void PathChosenWithoutExistingFile_ExceptionThrown()
-		{
-			_fileDialogMock.Setup(m => m.FilePath).Returns(@"C:\\testPath\\testFile.jpg");
-			_originalImageViewModel.FileDialog = _fileDialogMock.Object;
-
-			Assert.That(() => _originalImageViewModel.OpenFileDialogCommand.Execute(null), Throws.Exception.TypeOf<ApplicationException>());
-		}
-
-		[Test]
 		public void NoPathChosen_MethodReturns()
 		{
-			_fileDialogMock.Setup(m => m.ShowDialog()).Returns(false);
-			_originalImageViewModel.FileDialog = _fileDialogMock.Object;
+			var fileDialogMock = new Mock<IFileDialog>();
+			fileDialogMock.Setup(m => m.ShowDialog()).Returns(false);
+			SetSut(fileDialogMock);
 
 			_originalImageViewModel.OpenFileDialogCommand.Execute(null);
 
 			_fileLocationMock.Verify(m => m.SetNewLocation(It.IsAny<string>()), Times.Never);
+		}
+
+		[Test]
+		public void PathChosenWithoutExistingFile_ExceptionThrown()
+		{
+			var fileDialogMock = new Mock<IFileDialog>();
+			fileDialogMock.Setup(m => m.ShowDialog()).Returns(true);
+			fileDialogMock.Setup(m => m.FilePath).Returns(@"C:\\testPath\\testFile.jpg");
+			SetSut(fileDialogMock);
+
+			Assert.That(() => _originalImageViewModel.OpenFileDialogCommand.Execute(null),
+				Throws.Exception.TypeOf<ApplicationException>());
 		}
 	}
 }
