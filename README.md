@@ -1,6 +1,6 @@
 # RGBtoGrey
 
-RGBtoGrey is a WPF C# app that allows to convert image to grayscale and save it to disk.
+RGBtoGrey is a WPF C# app that allows to convert an image to grayscale and save it to disk.
 
 ## Getting started
 App should work on Windows 7 and newer.
